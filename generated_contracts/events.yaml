@@ -1,0 +1,106 @@
+kind: DataContract
+apiVersion: v3.0.0
+id: events
+info:
+  title: "events \u2014 Data Contract"
+  version: 1.0.0
+  owner: week7-team
+  description: Auto-generated contract for events. 60 records profiled.
+servers:
+  local:
+    type: local
+    path: outputs/week5/events.jsonl
+    format: jsonl
+terms:
+  usage: Internal inter-system contract.
+  limitations: Do not change column types without updating this contract.
+schema:
+  event_id:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60'
+  event_type:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1'
+    enum:
+    - DocumentProcessed
+  aggregate_id:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1'
+    enum:
+    - 85489556-f617-42e2-85f4-d51a0efadbbb
+  aggregate_type:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1'
+    enum:
+    - Document
+  sequence_number:
+    type: integer
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60'
+    minimum: 1.0
+    maximum: 60.0
+    statistics:
+      mean: 30.5
+      std: 17.4642
+      p25: 15.75
+      p75: 45.25
+  payload_status:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1'
+    enum:
+    - complete
+  payload_doc_id:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60'
+  metadata_causation_id:
+    type: string
+    required: false
+    description: 'Auto-profiled. Null rate: 100.0%. Cardinality: 0'
+    enum: []
+  metadata_correlation_id:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60'
+  metadata_user_id:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1'
+    enum:
+    - user_001
+  metadata_source_service:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1'
+    enum:
+    - week3-document-refinery
+  schema_version:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1'
+    enum:
+    - '1.0'
+  occurred_at:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60'
+  recorded_at:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60'
+quality:
+  type: SodaChecks
+  specification:
+    checks for events:
+    - row_count >= 1
+    - row_count >= 1
+    - row_count >= 1
+    - row_count >= 1
+lineage:
+  upstream: []
+  downstream: []

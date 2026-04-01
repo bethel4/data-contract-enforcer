@@ -1,0 +1,80 @@
+captured_at: 20260401T120328
+contract_id: extractions
+schema:
+  doc_id:
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60'
+    required: true
+    type: string
+  entities_count:
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1'
+    maximum: 1.0
+    minimum: 1.0
+    required: true
+    statistics:
+      mean: 1.0
+      p25: 1.0
+      p75: 1.0
+      std: 0.0
+    type: integer
+  extracted_at:
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60'
+    required: true
+    type: string
+  extracted_facts_count:
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1'
+    maximum: 3.0
+    minimum: 3.0
+    required: true
+    statistics:
+      mean: 3.0
+      p25: 3.0
+      p75: 3.0
+      std: 0.0
+    type: integer
+  extraction_model:
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1'
+    enum:
+    - claude-3-5-sonnet-20241022
+    required: true
+    type: string
+  processing_time_ms:
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60'
+    maximum: 2936.0
+    minimum: 506.0
+    required: true
+    statistics:
+      mean: 1810.7833
+      p25: 1219.0
+      p75: 2507.5
+      std: 734.5167
+    type: integer
+  source_hash:
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60'
+    required: true
+    type: string
+  source_path:
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60'
+    required: true
+    type: string
+  token_count_input:
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 59'
+    maximum: 4972.0
+    minimum: 3056.0
+    required: true
+    statistics:
+      mean: 3946.9333
+      p25: 3405.75
+      p75: 4479.75
+      std: 605.2237
+    type: integer
+  token_count_output:
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 55'
+    maximum: 1192.0
+    minimum: 524.0
+    required: true
+    statistics:
+      mean: 896.1333
+      p25: 747.0
+      p75: 1018.75
+      std: 188.0083
+    type: integer
