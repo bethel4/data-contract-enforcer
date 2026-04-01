@@ -1,0 +1,22 @@
+{
+  "generated_at": "2026-04-01T19:08:57.586542+00:00",
+  "data_health_score": 100.0,
+  "health_narrative": "System data health is EXCELLENT \u2014 all contracts passing.",
+  "summary": {
+    "total_checks": 48,
+    "passed": 48,
+    "failed": 0,
+    "violations": 0
+  },
+  "top_violations": [],
+  "ai_system_status": {
+    "embedding_drift": "N/A",
+    "embedding_status": "N/A",
+    "llm_violation_rate": "N/A",
+    "llm_trend": "N/A",
+    "overall_ai_status": "UNKNOWN"
+  },
+  "recommended_actions": [
+    "No critical actions required. Continue monitoring."
+  ]
+}

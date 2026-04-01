@@ -1,0 +1,91 @@
+captured_at: 20260401T195809
+contract_id: events
+schema:
+  aggregate_id:
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1 Expected UUID string.'
+    enum:
+    - 85489556-f617-42e2-85f4-d51a0efadbbb
+    format: uuid
+    required: true
+    type: string
+  aggregate_type:
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1 Restricted to observed
+      set of allowable values.'
+    enum:
+    - Document
+    required: true
+    type: string
+  event_id:
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60 Expected UUID string.'
+    format: uuid
+    required: true
+    type: string
+  event_type:
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1 Restricted to observed
+      set of allowable values.'
+    enum:
+    - DocumentProcessed
+    required: true
+    type: string
+  metadata_causation_id:
+    description: 'Auto-profiled. Null rate: 100.0%. Cardinality: 0 Unique identifier
+      string.'
+    enum: []
+    required: false
+    type: string
+  metadata_correlation_id:
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60 Expected UUID string.'
+    format: uuid
+    required: true
+    type: string
+  metadata_source_service:
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1'
+    enum:
+    - week3-document-refinery
+    required: true
+    type: string
+  metadata_user_id:
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1 Unique identifier
+      string.'
+    enum:
+    - user_001
+    required: true
+    type: string
+  occurred_at:
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60 ISO 8601 timestamp.'
+    format: date-time
+    required: true
+    type: string
+  payload_doc_id:
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60 Expected UUID string.'
+    format: uuid
+    required: true
+    type: string
+  payload_status:
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1 Known operation state.'
+    enum:
+    - complete
+    required: true
+    type: string
+  recorded_at:
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60 ISO 8601 timestamp.'
+    format: date-time
+    required: true
+    type: string
+  schema_version:
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1'
+    enum:
+    - '1.0'
+    required: true
+    type: string
+  sequence_number:
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60'
+    maximum: 60.0
+    minimum: 1.0
+    required: true
+    statistics:
+      mean: 30.5
+      p25: 15.75
+      p75: 45.25
+      std: 17.4642
+    type: integer

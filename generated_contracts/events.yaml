@@ -18,23 +18,27 @@ schema:
   event_id:
     type: string
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60'
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60 Expected UUID string.'
+    format: uuid
   event_type:
     type: string
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1'
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1 Restricted to observed
+      set of allowable values.'
     enum:
     - DocumentProcessed
   aggregate_id:
     type: string
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1'
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1 Expected UUID string.'
     enum:
     - 85489556-f617-42e2-85f4-d51a0efadbbb
+    format: uuid
   aggregate_type:
     type: string
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1'
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1 Restricted to observed
+      set of allowable values.'
     enum:
     - Document
   sequence_number:
@@ -51,26 +55,30 @@ schema:
   payload_status:
     type: string
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1'
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1 Known operation state.'
     enum:
     - complete
   payload_doc_id:
     type: string
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60'
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60 Expected UUID string.'
+    format: uuid
   metadata_causation_id:
     type: string
     required: false
-    description: 'Auto-profiled. Null rate: 100.0%. Cardinality: 0'
+    description: 'Auto-profiled. Null rate: 100.0%. Cardinality: 0 Unique identifier
+      string.'
     enum: []
   metadata_correlation_id:
     type: string
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60'
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60 Expected UUID string.'
+    format: uuid
   metadata_user_id:
     type: string
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1'
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 1 Unique identifier
+      string.'
     enum:
     - user_001
   metadata_source_service:
@@ -88,19 +96,40 @@ schema:
   occurred_at:
     type: string
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60'
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60 ISO 8601 timestamp.'
+    format: date-time
   recorded_at:
     type: string
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60'
+    description: 'Auto-profiled. Null rate: 0.0%. Cardinality: 60 ISO 8601 timestamp.'
+    format: date-time
 quality:
   type: SodaChecks
   specification:
     checks for events:
     - row_count >= 1
-    - row_count >= 1
-    - row_count >= 1
-    - row_count >= 1
+    - missing_count(event_id) = 0
+    - missing_count(event_type) = 0
+    - accepted_values(event_type) in ['DocumentProcessed']
+    - missing_count(aggregate_id) = 0
+    - accepted_values(aggregate_id) in ['85489556-f617-42e2-85f4-d51a0efadbbb']
+    - missing_count(aggregate_type) = 0
+    - accepted_values(aggregate_type) in ['Document']
+    - missing_count(sequence_number) = 0
+    - min(sequence_number) >= 1.0
+    - max(sequence_number) <= 60.0
+    - missing_count(payload_status) = 0
+    - accepted_values(payload_status) in ['complete']
+    - missing_count(payload_doc_id) = 0
+    - missing_count(metadata_correlation_id) = 0
+    - missing_count(metadata_user_id) = 0
+    - accepted_values(metadata_user_id) in ['user_001']
+    - missing_count(metadata_source_service) = 0
+    - accepted_values(metadata_source_service) in ['week3-document-refinery']
+    - missing_count(schema_version) = 0
+    - accepted_values(schema_version) in ['1.0']
+    - missing_count(occurred_at) = 0
+    - missing_count(recorded_at) = 0
 lineage:
   upstream: []
   downstream: []

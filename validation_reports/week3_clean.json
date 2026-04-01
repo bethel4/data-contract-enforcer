@@ -1,301 +1,220 @@
-{
-  "report_id": "50550cb9-5ed6-4c17-a68c-15956fdc41d6",
-  "contract_id": "extractions",
-  "snapshot_id": "f7a3c7d720fe8729",
-  "run_timestamp": "2026-04-01T12:06:18.100703+00:00",
-  "total_checks": 24,
-  "passed": 24,
-  "failed": 0,
-  "warned": 0,
-  "errored": 0,
-  "results": [
-    {
-      "check_id": "extractions.doc_id.not_null",
-      "column_name": "doc_id",
-      "check_type": "not_null",
-      "status": "PASS",
-      "actual_value": "null_count=0",
-      "expected": "null_count=0",
-      "severity": "INFO",
-      "records_failing": 0,
-      "sample_failing": [],
-      "message": "OK"
-    },
-    {
-      "check_id": "extractions.source_path.not_null",
-      "column_name": "source_path",
-      "check_type": "not_null",
-      "status": "PASS",
-      "actual_value": "null_count=0",
-      "expected": "null_count=0",
-      "severity": "INFO",
-      "records_failing": 0,
-      "sample_failing": [],
-      "message": "OK"
-    },
-    {
-      "check_id": "extractions.source_hash.not_null",
-      "column_name": "source_hash",
-      "check_type": "not_null",
-      "status": "PASS",
-      "actual_value": "null_count=0",
-      "expected": "null_count=0",
-      "severity": "INFO",
-      "records_failing": 0,
-      "sample_failing": [],
-      "message": "OK"
-    },
-    {
-      "check_id": "extractions.extracted_facts_count.not_null",
-      "column_name": "extracted_facts_count",
-      "check_type": "not_null",
-      "status": "PASS",
-      "actual_value": "null_count=0",
-      "expected": "null_count=0",
-      "severity": "INFO",
-      "records_failing": 0,
-      "sample_failing": [],
-      "message": "OK"
-    },
-    {
-      "check_id": "extractions.extracted_facts_count.min",
-      "column_name": "extracted_facts_count",
-      "check_type": "range",
-      "status": "PASS",
-      "actual_value": "min=3.0",
-      "expected": "min>=3.0",
-      "severity": "INFO",
-      "records_failing": 0,
-      "sample_failing": [],
-      "message": "OK"
-    },
-    {
-      "check_id": "extractions.extracted_facts_count.max",
-      "column_name": "extracted_facts_count",
-      "check_type": "range",
-      "status": "PASS",
-      "actual_value": "max=3.0",
-      "expected": "max<=3.0",
-      "severity": "INFO",
-      "records_failing": 0,
-      "sample_failing": [],
-      "message": "OK"
-    },
-    {
-      "check_id": "extractions.entities_count.not_null",
-      "column_name": "entities_count",
-      "check_type": "not_null",
-      "status": "PASS",
-      "actual_value": "null_count=0",
-      "expected": "null_count=0",
-      "severity": "INFO",
-      "records_failing": 0,
-      "sample_failing": [],
-      "message": "OK"
-    },
-    {
-      "check_id": "extractions.entities_count.min",
-      "column_name": "entities_count",
-      "check_type": "range",
-      "status": "PASS",
-      "actual_value": "min=1.0",
-      "expected": "min>=1.0",
-      "severity": "INFO",
-      "records_failing": 0,
-      "sample_failing": [],
-      "message": "OK"
-    },
-    {
-      "check_id": "extractions.entities_count.max",
-      "column_name": "entities_count",
-      "check_type": "range",
-      "status": "PASS",
-      "actual_value": "max=1.0",
-      "expected": "max<=1.0",
-      "severity": "INFO",
-      "records_failing": 0,
-      "sample_failing": [],
-      "message": "OK"
-    },
-    {
-      "check_id": "extractions.extraction_model.not_null",
-      "column_name": "extraction_model",
-      "check_type": "not_null",
-      "status": "PASS",
-      "actual_value": "null_count=0",
-      "expected": "null_count=0",
-      "severity": "INFO",
-      "records_failing": 0,
-      "sample_failing": [],
-      "message": "OK"
-    },
-    {
-      "check_id": "extractions.extraction_model.enum",
-      "column_name": "extraction_model",
-      "check_type": "accepted_values",
-      "status": "PASS",
-      "actual_value": "invalid_count=0",
-      "expected": "enum=['claude-3-5-sonnet-20241022']",
-      "severity": "INFO",
-      "records_failing": 0,
-      "sample_failing": [],
-      "message": "OK"
-    },
-    {
-      "check_id": "extractions.processing_time_ms.not_null",
-      "column_name": "processing_time_ms",
-      "check_type": "not_null",
-      "status": "PASS",
-      "actual_value": "null_count=0",
-      "expected": "null_count=0",
-      "severity": "INFO",
-      "records_failing": 0,
-      "sample_failing": [],
-      "message": "OK"
-    },
-    {
-      "check_id": "extractions.processing_time_ms.min",
-      "column_name": "processing_time_ms",
-      "check_type": "range",
-      "status": "PASS",
-      "actual_value": "min=506.0",
-      "expected": "min>=506.0",
-      "severity": "INFO",
-      "records_failing": 0,
-      "sample_failing": [],
-      "message": "OK"
-    },
-    {
-      "check_id": "extractions.processing_time_ms.max",
-      "column_name": "processing_time_ms",
-      "check_type": "range",
-      "status": "PASS",
-      "actual_value": "max=2936.0",
-      "expected": "max<=2936.0",
-      "severity": "INFO",
-      "records_failing": 0,
-      "sample_failing": [],
-      "message": "OK"
-    },
-    {
-      "check_id": "extractions.processing_time_ms.drift",
-      "column_name": "processing_time_ms",
-      "check_type": "statistical_drift",
-      "status": "PASS",
-      "actual_value": "mean=1810.7833, z=0.0",
-      "expected": "z-score < 2 (baseline_mean=1810.7833)",
-      "severity": "INFO",
-      "records_failing": 0,
-      "sample_failing": [],
-      "message": "OK"
-    },
-    {
-      "check_id": "extractions.token_count_input.not_null",
-      "column_name": "token_count_input",
-      "check_type": "not_null",
-      "status": "PASS",
-      "actual_value": "null_count=0",
-      "expected": "null_count=0",
-      "severity": "INFO",
-      "records_failing": 0,
-      "sample_failing": [],
-      "message": "OK"
-    },
-    {
-      "check_id": "extractions.token_count_input.min",
-      "column_name": "token_count_input",
-      "check_type": "range",
-      "status": "PASS",
-      "actual_value": "min=3056.0",
-      "expected": "min>=3056.0",
-      "severity": "INFO",
-      "records_failing": 0,
-      "sample_failing": [],
-      "message": "OK"
-    },
-    {
-      "check_id": "extractions.token_count_input.max",
-      "column_name": "token_count_input",
-      "check_type": "range",
-      "status": "PASS",
-      "actual_value": "max=4972.0",
-      "expected": "max<=4972.0",
-      "severity": "INFO",
-      "records_failing": 0,
-      "sample_failing": [],
-      "message": "OK"
-    },
-    {
-      "check_id": "extractions.token_count_input.drift",
-      "column_name": "token_count_input",
-      "check_type": "statistical_drift",
-      "status": "PASS",
-      "actual_value": "mean=3946.9333, z=0.0",
-      "expected": "z-score < 2 (baseline_mean=3946.9333)",
-      "severity": "INFO",
-      "records_failing": 0,
-      "sample_failing": [],
-      "message": "OK"
-    },
-    {
-      "check_id": "extractions.token_count_output.not_null",
-      "column_name": "token_count_output",
-      "check_type": "not_null",
-      "status": "PASS",
-      "actual_value": "null_count=0",
-      "expected": "null_count=0",
-      "severity": "INFO",
-      "records_failing": 0,
-      "sample_failing": [],
-      "message": "OK"
-    },
-    {
-      "check_id": "extractions.token_count_output.min",
-      "column_name": "token_count_output",
-      "check_type": "range",
-      "status": "PASS",
-      "actual_value": "min=524.0",
-      "expected": "min>=524.0",
-      "severity": "INFO",
-      "records_failing": 0,
-      "sample_failing": [],
-      "message": "OK"
-    },
-    {
-      "check_id": "extractions.token_count_output.max",
-      "column_name": "token_count_output",
-      "check_type": "range",
-      "status": "PASS",
-      "actual_value": "max=1192.0",
-      "expected": "max<=1192.0",
-      "severity": "INFO",
-      "records_failing": 0,
-      "sample_failing": [],
-      "message": "OK"
-    },
-    {
-      "check_id": "extractions.token_count_output.drift",
-      "column_name": "token_count_output",
-      "check_type": "statistical_drift",
-      "status": "PASS",
-      "actual_value": "mean=896.1333, z=0.0",
-      "expected": "z-score < 2 (baseline_mean=896.1333)",
-      "severity": "INFO",
-      "records_failing": 0,
-      "sample_failing": [],
-      "message": "OK"
-    },
-    {
-      "check_id": "extractions.extracted_at.not_null",
-      "column_name": "extracted_at",
-      "check_type": "not_null",
-      "status": "PASS",
-      "actual_value": "null_count=0",
-      "expected": "null_count=0",
-      "severity": "INFO",
-      "records_failing": 0,
-      "sample_failing": [],
-      "message": "OK"
-    }
-  ]
-}
+kind: DataContract
+apiVersion: v3.0.0
+id: week7-extractions
+info:
+  title: extractions — Data Contract
+  version: 1.0.0
+  owner: week7-data-contract-enforcer
+  description: Auto-generated contract for extractions. Profiled from 4 records. Generated
+    2026-04-01T20:07:49.394539+00:00.
+servers:
+  local:
+    type: local
+    path: outputs/week3/extractions.jsonl
+    format: jsonl
+terms:
+  usage: Internal inter-system data contract. Do not publish externally.
+  limitations: The confidence field must remain float 0.0–1.0. Schema changes require
+    blast-radius analysis before deployment.
+schema:
+  doc_id:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    format: uuid
+    enum:
+    - d1a2b3c4-0001-4e5f-a6b7-c8d9e0f1a2b3
+    - d2b3c4d5-0002-4e5f-a6b7-c8d9e0f1a2b3
+    - d3c4d5e6-0003-4e5f-a6b7-c8d9e0f1a2b3
+    - d4d5e6f7-0004-4e5f-a6b7-c8d9e0f1a2b3
+    pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+  source_path:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    enum:
+    - /corpus/Audit-Report-DBE-2023.pdf
+    - /corpus/CBE-Annual-Report-2023-24.pdf
+    - /corpus/fta_performance_survey_final_report_2022.pdf
+    - /corpus/tax_expenditure_ethiopia_2021_22.pdf
+  source_hash:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    enum:
+    - a8f5f167f44f4964e6c998dee827110c3a8f5f167f44f4964e6c998dee827110c
+    - b9e6e278055a0951928a7f18e3b5c221b9e6e278055a0951928a7f18e3b5c221
+    - c0f7f389166b1a62039b8e29f4c6d332c0f7f389166b1a62039b8e29f4c6d332
+    - d1a8a4a0277c2c999b843e3aefad7443d1a8a4a0277c2c999b843e3aefad7443
+  extracted_facts__count:
+    type: integer
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 2.'
+    minimum: 5.0
+    maximum: 6.0
+    statistics:
+      mean: 5.5
+      std: 0.57735
+      p25: 5.0
+      p75: 6.0
+  extracted_facts_0_fact_id:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    enum:
+    - f001-aaaa-4e5f-a6b7-c8d9e0f1a2b3
+    - f007-bbbb-4e5f-a6b7-c8d9e0f1a2b3
+    - f012-cccc-4e5f-a6b7-c8d9e0f1a2b3
+    - f017-dddd-4e5f-a6b7-c8d9e0f1a2b3
+  extracted_facts_0_text:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    enum:
+    - Financial transparency and accountability score improved from 42 to 67 out of
+      100 during assessment period
+    - Independent auditor issued unqualified opinion on financial statements for year
+      ended 30 June 2023
+    - Total assets of Commercial Bank of Ethiopia reached ETB 1.28 trillion as at
+      June 30 2024
+    - Total tax expenditure estimated at ETB 47.3 billion in FY 2020-21 fiscal year
+  extracted_facts_0_confidence:
+    type: number
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4. CRITICAL: must
+      remain float 0.0–1.0. Do NOT convert to percentage scale (0–100). A value of
+      0.87 means 87 percent confidence. Changing this scale is a BREAKING CHANGE that
+      silently corrupts all downstream consumers.'
+    minimum: 0.0
+    maximum: 1.0
+    statistics:
+      mean: 0.9325
+      std: 0.017078
+      p25: 0.925
+      p75: 0.9425
+  extracted_facts_0_page_ref:
+    type: integer
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    minimum: 1.0
+    maximum: 8.0
+    statistics:
+      mean: 4.75
+      std: 2.986079
+      p25: 3.25
+      p75: 6.5
+  extracted_facts_0_source_excerpt:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    enum:
+    - FTA score improved 42 to 67
+    - Total assets reached ETB 1.28 trillion
+    - Total tax expenditure ETB 47.3 billion
+    - Unqualified audit opinion issued
+  entities__count:
+    type: integer
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 1.'
+    minimum: 1.0
+    maximum: 1.0
+    statistics:
+      mean: 1.0
+      std: 0.0
+      p25: 1.0
+      p75: 1.0
+  entities_0_entity_id:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    enum:
+    - e001-aaaa-4e5f-a6b7-c8d9e0f1a2b3
+    - e002-bbbb-4e5f-a6b7-c8d9e0f1a2b3
+    - e003-cccc-4e5f-a6b7-c8d9e0f1a2b3
+    - e004-dddd-4e5f-a6b7-c8d9e0f1a2b3
+  entities_0_name:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    enum:
+    - Commercial Bank of Ethiopia
+    - Development Bank of Ethiopia
+    - Ministry of Finance Ethiopia
+    - Tax Policy Directorate Ethiopia
+  entities_0_type:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 1.'
+    enum:
+    - ORG
+  entities_0_canonical_value:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    enum:
+    - Commercial Bank of Ethiopia
+    - Development Bank of Ethiopia
+    - Ministry of Finance Ethiopia
+    - Tax Policy Directorate Ethiopia
+  extraction_model:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 1.'
+    enum:
+    - claude-3-5-sonnet-20241022
+  processing_time_ms:
+    type: integer
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    minimum: 2890.0
+    maximum: 4100.0
+    statistics:
+      mean: 3447.5
+      std: 513.898498
+      p25: 3152.5
+      p75: 3695.0
+  token_count_input:
+    type: integer
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    minimum: 4800.0
+    maximum: 6100.0
+    statistics:
+      mean: 5425.0
+      std: 556.027577
+      p25: 5100.0
+      p75: 5725.0
+  token_count_output:
+    type: integer
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    minimum: 920.0
+    maximum: 1200.0
+    statistics:
+      mean: 1050.0
+      std: 124.89996
+      p25: 965.0
+      p75: 1125.0
+  extracted_at:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    format: date-time
+    enum:
+    - '2026-03-15T10:22:00Z'
+    - '2026-03-15T11:05:00Z'
+    - '2026-03-15T11:45:00Z'
+    - '2026-03-15T12:30:00Z'
+quality:
+  type: SodaChecks
+  specification:
+    checks for extractions:
+    - row_count >= 2
+    - missing_count(doc_id) = 0
+    - duplicate_count(doc_id) = 0
+    - min(confidence) >= 0.0
+    - max(confidence) <= 1.0
+    - avg(confidence) between 0.05 and 0.99
+lineage:
+  upstream: []
+  downstream: []
