@@ -114,14 +114,7 @@ def build_clause(col: str, series: pd.Series) -> dict:
     # Enum detection (low-cardinality strings)
     if "float" not in dtype and "int" not in dtype and series.nunique() <= 10:
         vals = sorted(series.dropna().unique().tolist())
-        if vals:
-            clause["enum"] = [str(v) for v in vals]
-
-    # Unique inference for identifier-like fields based on sampled non-null values
-    if col.endswith("_id") or col in {"doc_id", "event_id"}:
-        non_null = series.dropna()
-        if len(non_null) > 0 and non_null.nunique() == len(non_null):
-            clause["unique"] = True
+        clause["enum"] = [str(v) for v in vals]
 
     # Pattern for hash fields
     if fmt == "sha256":
@@ -265,29 +258,19 @@ def _write_dbt(name: str, schema: dict, output_dir: str) -> None:
     """Write a dbt schema.yml counterpart for the contract."""
     columns = []
     for col, clause in schema.items():
-        tests = []
-        if clause.get("required"):
-            tests.append("not_null")
-        if (col.endswith("_id") or col in {"doc_id", "event_id"}) and clause.get("unique"):
-            tests.append("unique")
-        if "enum" in clause:
-            tests.append({
-                "accepted_values": {"values": clause["enum"]}
-            })
-        if clause.get("type") in {"number", "integer"} and "minimum" in clause and "maximum" in clause:
-            tests.append({
-                "dbt_utils.expression_is_true": {
-                    "expression": (
-                        f"{col} >= {clause['minimum']} AND {col} <= {clause['maximum']}"
-                    )
-                }
-            })
-
         col_entry: dict = {
             "name": col,
             "description": clause.get("description", ""),
-            "tests": tests,
+            "tests": [],
         }
+        if clause.get("required"):
+            col_entry["tests"].append("not_null")
+        if col.endswith("_id") or col == "doc_id" or col == "event_id":
+            col_entry["tests"].append("unique")
+        if "enum" in clause:
+            col_entry["tests"].append({
+                "accepted_values": {"values": clause["enum"]}
+            })
         columns.append(col_entry)
 
     dbt = {
