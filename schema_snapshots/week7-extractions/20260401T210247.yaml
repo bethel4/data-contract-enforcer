@@ -1,28 +1,11 @@
-kind: DataContract
-apiVersion: v3.0.0
-id: week7-extractions
-info:
-  title: extractions — Data Contract
-  version: 1.0.0
-  owner: week7-data-contract-enforcer
-  description: Auto-generated contract for extractions. Profiled from 60 records.
-    Generated 2026-04-01T21:03:57.319118+00:00.
-servers:
-  local:
-    type: local
-    path: outputs/week3/extractions.jsonl
-    format: jsonl
-terms:
-  usage: Internal inter-system data contract. Do not publish externally.
-  limitations: The confidence field must remain float 0.0–1.0. Schema changes require
-    blast-radius analysis before deployment.
+contract_id: week7-extractions
+captured_at: 20260401T210247
 schema:
   doc_id:
     type: string
     required: true
     description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 60.'
     format: uuid
-    unique: true
     pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
   source_path:
     type: string
@@ -50,7 +33,6 @@ schema:
     required: true
     description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 60.'
     format: uuid
-    unique: true
     pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
   extracted_facts_0_text:
     type: string
@@ -59,10 +41,10 @@ schema:
   extracted_facts_0_confidence:
     type: number
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 31. CRITICAL: must
-      remain float 0.0–1.0. Do NOT convert to percentage scale (0–100). A value of
-      0.87 means 87 percent confidence. Changing this scale is a BREAKING CHANGE that
-      silently corrupts all downstream consumers.'
+    description: "Auto-profiled. Null rate: 0.0%. Distinct values: 31. CRITICAL: must\
+      \ remain float 0.0\u20131.0. Do NOT convert to percentage scale (0\u2013100).\
+      \ A value of 0.87 means 87 percent confidence. Changing this scale is a BREAKING\
+      \ CHANGE that silently corrupts all downstream consumers."
     minimum: 0.0
     maximum: 1.0
     statistics:
@@ -103,7 +85,6 @@ schema:
     required: true
     description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 60.'
     format: uuid
-    unique: true
     pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
   entities_0_name:
     type: string
@@ -168,20 +149,3 @@ schema:
     required: true
     description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 60.'
     format: date-time
-quality:
-  type: SodaChecks
-  specification:
-    checks for extractions:
-    - row_count >= 30
-    - missing_count(doc_id) = 0
-    - duplicate_count(doc_id) = 0
-    - min(confidence) >= 0.0
-    - max(confidence) <= 1.0
-    - avg(confidence) between 0.05 and 0.99
-lineage:
-  upstream: []
-  downstream:
-  - id: file::src/week4/cartographer.py
-    relationship: READS
-    fields_consumed:
-    - all
