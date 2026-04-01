@@ -5,8 +5,8 @@ info:
   title: extractions — Data Contract
   version: 1.0.0
   owner: week7-data-contract-enforcer
-  description: Auto-generated contract for extractions. Profiled from 60 records.
-    Generated 2026-04-01T21:03:57.319118+00:00.
+  description: Auto-generated contract for extractions. Profiled from 4 records. Generated
+    2026-04-01T20:07:49.394539+00:00.
 servers:
   local:
     type: local
@@ -20,73 +20,98 @@ schema:
   doc_id:
     type: string
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 60.'
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
     format: uuid
-    unique: true
+    enum:
+    - d1a2b3c4-0001-4e5f-a6b7-c8d9e0f1a2b3
+    - d2b3c4d5-0002-4e5f-a6b7-c8d9e0f1a2b3
+    - d3c4d5e6-0003-4e5f-a6b7-c8d9e0f1a2b3
+    - d4d5e6f7-0004-4e5f-a6b7-c8d9e0f1a2b3
     pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
   source_path:
     type: string
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 60.'
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    enum:
+    - /corpus/Audit-Report-DBE-2023.pdf
+    - /corpus/CBE-Annual-Report-2023-24.pdf
+    - /corpus/fta_performance_survey_final_report_2022.pdf
+    - /corpus/tax_expenditure_ethiopia_2021_22.pdf
   source_hash:
     type: string
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 60.'
-    format: sha256
-    pattern: ^[a-f0-9]{64}$
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    enum:
+    - a8f5f167f44f4964e6c998dee827110c3a8f5f167f44f4964e6c998dee827110c
+    - b9e6e278055a0951928a7f18e3b5c221b9e6e278055a0951928a7f18e3b5c221
+    - c0f7f389166b1a62039b8e29f4c6d332c0f7f389166b1a62039b8e29f4c6d332
+    - d1a8a4a0277c2c999b843e3aefad7443d1a8a4a0277c2c999b843e3aefad7443
   extracted_facts__count:
     type: integer
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 1.'
-    minimum: 3.0
-    maximum: 3.0
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 2.'
+    minimum: 5.0
+    maximum: 6.0
     statistics:
-      mean: 3.0
-      std: 0.0
-      p25: 3.0
-      p75: 3.0
+      mean: 5.5
+      std: 0.57735
+      p25: 5.0
+      p75: 6.0
   extracted_facts_0_fact_id:
     type: string
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 60.'
-    format: uuid
-    unique: true
-    pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    enum:
+    - f001-aaaa-4e5f-a6b7-c8d9e0f1a2b3
+    - f007-bbbb-4e5f-a6b7-c8d9e0f1a2b3
+    - f012-cccc-4e5f-a6b7-c8d9e0f1a2b3
+    - f017-dddd-4e5f-a6b7-c8d9e0f1a2b3
   extracted_facts_0_text:
     type: string
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 60.'
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    enum:
+    - Financial transparency and accountability score improved from 42 to 67 out of
+      100 during assessment period
+    - Independent auditor issued unqualified opinion on financial statements for year
+      ended 30 June 2023
+    - Total assets of Commercial Bank of Ethiopia reached ETB 1.28 trillion as at
+      June 30 2024
+    - Total tax expenditure estimated at ETB 47.3 billion in FY 2020-21 fiscal year
   extracted_facts_0_confidence:
     type: number
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 31. CRITICAL: must
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4. CRITICAL: must
       remain float 0.0–1.0. Do NOT convert to percentage scale (0–100). A value of
       0.87 means 87 percent confidence. Changing this scale is a BREAKING CHANGE that
       silently corrupts all downstream consumers.'
     minimum: 0.0
     maximum: 1.0
     statistics:
-      mean: 0.788167
-      std: 0.122343
-      p25: 0.69
-      p75: 0.9
+      mean: 0.9325
+      std: 0.017078
+      p25: 0.925
+      p75: 0.9425
   extracted_facts_0_page_ref:
     type: integer
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 20.'
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
     minimum: 1.0
-    maximum: 20.0
+    maximum: 8.0
     statistics:
-      mean: 9.733333
-      std: 5.842181
-      p25: 6.0
-      p75: 15.0
+      mean: 4.75
+      std: 2.986079
+      p25: 3.25
+      p75: 6.5
   extracted_facts_0_source_excerpt:
     type: string
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 1.'
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
     enum:
-    - verbatim excerpt 0
+    - FTA score improved 42 to 67
+    - Total assets reached ETB 1.28 trillion
+    - Total tax expenditure ETB 47.3 billion
+    - Unqualified audit opinion issued
   entities__count:
     type: integer
     required: true
@@ -101,29 +126,36 @@ schema:
   entities_0_entity_id:
     type: string
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 60.'
-    format: uuid
-    unique: true
-    pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    enum:
+    - e001-aaaa-4e5f-a6b7-c8d9e0f1a2b3
+    - e002-bbbb-4e5f-a6b7-c8d9e0f1a2b3
+    - e003-cccc-4e5f-a6b7-c8d9e0f1a2b3
+    - e004-dddd-4e5f-a6b7-c8d9e0f1a2b3
   entities_0_name:
     type: string
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 60.'
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    enum:
+    - Commercial Bank of Ethiopia
+    - Development Bank of Ethiopia
+    - Ministry of Finance Ethiopia
+    - Tax Policy Directorate Ethiopia
   entities_0_type:
     type: string
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 6.'
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 1.'
     enum:
-    - AMOUNT
-    - DATE
-    - LOCATION
     - ORG
-    - OTHER
-    - PERSON
   entities_0_canonical_value:
     type: string
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 60.'
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    enum:
+    - Commercial Bank of Ethiopia
+    - Development Bank of Ethiopia
+    - Ministry of Finance Ethiopia
+    - Tax Policy Directorate Ethiopia
   extraction_model:
     type: string
     required: true
@@ -133,46 +165,51 @@ schema:
   processing_time_ms:
     type: integer
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 60.'
-    minimum: 506.0
-    maximum: 2936.0
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    minimum: 2890.0
+    maximum: 4100.0
     statistics:
-      mean: 1810.783333
-      std: 734.516746
-      p25: 1219.0
-      p75: 2507.5
+      mean: 3447.5
+      std: 513.898498
+      p25: 3152.5
+      p75: 3695.0
   token_count_input:
     type: integer
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 59.'
-    minimum: 3056.0
-    maximum: 4972.0
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    minimum: 4800.0
+    maximum: 6100.0
     statistics:
-      mean: 3946.933333
-      std: 605.22367
-      p25: 3405.75
-      p75: 4479.75
+      mean: 5425.0
+      std: 556.027577
+      p25: 5100.0
+      p75: 5725.0
   token_count_output:
     type: integer
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 55.'
-    minimum: 524.0
-    maximum: 1192.0
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    minimum: 920.0
+    maximum: 1200.0
     statistics:
-      mean: 896.133333
-      std: 188.008336
-      p25: 747.0
-      p75: 1018.75
+      mean: 1050.0
+      std: 124.89996
+      p25: 965.0
+      p75: 1125.0
   extracted_at:
     type: string
     required: true
-    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 60.'
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
     format: date-time
+    enum:
+    - '2026-03-15T10:22:00Z'
+    - '2026-03-15T11:05:00Z'
+    - '2026-03-15T11:45:00Z'
+    - '2026-03-15T12:30:00Z'
 quality:
   type: SodaChecks
   specification:
     checks for extractions:
-    - row_count >= 30
+    - row_count >= 2
     - missing_count(doc_id) = 0
     - duplicate_count(doc_id) = 0
     - min(confidence) >= 0.0
@@ -180,8 +217,4 @@ quality:
     - avg(confidence) between 0.05 and 0.99
 lineage:
   upstream: []
-  downstream:
-  - id: file::src/week4/cartographer.py
-    relationship: READS
-    fields_consumed:
-    - all
+  downstream: []
