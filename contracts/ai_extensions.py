@@ -13,6 +13,16 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+try:
+    from openrouter_client import call_openrouter, load_env
+    load_env()
+    OPENROUTER_AVAILABLE = True
+except Exception:
+    OPENROUTER_AVAILABLE = False
+
 
 
 def now() -> str:
@@ -36,18 +46,58 @@ def load_jsonl(path: str) -> list:
 
 def simple_embed(text: str, dim: int = 128) -> np.ndarray:
     """
-    Lightweight char-frequency embedding (no API needed).
-    In production this would call text-embedding-3-small.
+    Char-frequency embedding fallback (no API key needed).
+    When OPENROUTER_API_KEY is set, real_embed() is used instead.
     """
     vec = np.zeros(dim, dtype=np.float32)
     text = text.lower()[:500]
     for i, ch in enumerate(text):
         vec[ord(ch) % dim] += 1.0
-    # Add bigram signal
     for i in range(len(text) - 1):
         vec[(ord(text[i]) * 31 + ord(text[i+1])) % dim] += 0.5
     norm = np.linalg.norm(vec)
     return vec / norm if norm > 0 else vec
+
+
+def real_embed(text: str) -> np.ndarray:
+    """
+    Real embedding via OpenRouter (uses openai/text-embedding-ada-002 through OR).
+    Falls back to simple_embed if API key missing or call fails.
+    """
+    import os, json
+    if not OPENROUTER_AVAILABLE or not os.environ.get("OPENROUTER_API_KEY",""):
+        return simple_embed(text)
+    try:
+        import urllib.request
+        payload = json.dumps({
+            "model": "openai/text-embedding-ada-002",
+            "input": text[:2000]
+        }).encode()
+        req = urllib.request.Request(
+            "https://openrouter.ai/api/v1/embeddings",
+            data=payload,
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}",
+                "HTTP-Referer": "https://github.com/week7-enforcer",
+            },
+            method="POST",
+        )
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            data = json.loads(resp.read())
+            vec = np.array(data["data"][0]["embedding"], dtype=np.float32)
+            norm = np.linalg.norm(vec)
+            return vec / norm if norm > 0 else vec
+    except Exception as e:
+        return simple_embed(text)
+
+
+def get_embed(text: str) -> np.ndarray:
+    """Auto-select: real embedding if API key present, else char-frequency."""
+    import os
+    if OPENROUTER_AVAILABLE and os.environ.get("OPENROUTER_API_KEY",""):
+        return real_embed(text)
+    return simple_embed(text)
 
 
 def cosine_distance(a: np.ndarray, b: np.ndarray) -> float:
@@ -71,7 +121,8 @@ def check_embedding_drift(
     if not sample:
         return {"status": "ERROR", "message": "No text values found", "drift_score": None}
 
-    embeddings       = np.array([simple_embed(t) for t in sample])
+    embed_fn = get_embed if (OPENROUTER_AVAILABLE and __import__('os').environ.get('OPENROUTER_API_KEY','')) else simple_embed
+    embeddings       = np.array([embed_fn(t) for t in sample])
     current_centroid = embeddings.mean(axis=0)
 
     bp = Path(baseline_path)

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Contract Enforcer</title>
+<style>
+  :root {
+    --bg:#0c0c12;--s1:#14141e;--s2:#1c1c28;--s3:#242434;
+    --border:rgba(255,255,255,0.07);--text:#e8e8f0;--muted:#5a5a78;--dim:#8888a8;
+    --purple:#7c6ff7;--purple-l:#a59efa;--purple-d:#2d2960;
+    --teal:#2dd4bf;--teal-d:#0f3d38;
+    --red:#f87171;--red-d:#5c1a1a;
+    --green:#4ade80;--green-d:#0f3320;
+    --amber:#fbbf24;--amber-d:#4a2800;
+    --mono:'JetBrains Mono','Fira Code','Courier New',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,'Segoe UI',sans-serif;font-size:14px;line-height:1.5}
+  .shell{display:grid;grid-template-rows:54px 1fr;height:100vh}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:0 26px;border-bottom:1px solid var(--border);background:var(--s1)}
+  .logo{font-size:15px;font-weight:600;letter-spacing:-.01em}
+  .logo span{color:var(--purple)}
+  .nav{display:flex;gap:2px}
+  .nb{padding:6px 14px;font-size:12px;font-weight:500;color:var(--muted);background:transparent;border:none;border-radius:6px;cursor:pointer;transition:all .15s}
+  .nb:hover{color:var(--text);background:var(--s2)}
+  .nb.on{color:var(--purple-l);background:var(--purple-d)}
+  .topbar-right{display:flex;align-items:center;gap:16px;font-size:12px;color:var(--muted)}
+  .dot-live{width:7px;height:7px;border-radius:50%;background:var(--red);display:inline-block;margin-right:5px;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  .content{overflow-y:auto;padding:24px}
+  .sec{display:none}.sec.on{display:block}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+  .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+  .g6{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:14px}
+  @media(max-width:900px){.g3,.g6{grid-template-columns:1fr 1fr}}
+  @media(max-width:600px){.g2,.g3,.g6{grid-template-columns:1fr}}
+  .card{background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:12px}
+  .ct{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:12px}
+  .metric{background:var(--s2);border-radius:8px;padding:14px}
+  .ml{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:5px}
+  .mv{font-size:30px;font-weight:700;line-height:1}
+  .ms{font-size:11px;color:var(--muted);margin-top:3px}
+  .badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 7px;border-radius:5px;letter-spacing:.04em}
+  .bc{background:var(--red-d);color:var(--red)}
+  .bh{background:var(--amber-d);color:var(--amber)}
+  .bg{background:var(--green-d);color:var(--green)}
+  .bp{background:var(--purple-d);color:var(--purple-l)}
+  .bt{background:var(--teal-d);color:var(--teal)}
+  .viol{padding:12px 14px;border-radius:8px;margin-bottom:8px;border:1px solid}
+  .viol.crit{background:rgba(248,113,113,0.06);border-color:rgba(248,113,113,0.2)}
+  .viol.hi{background:rgba(251,191,36,0.06);border-color:rgba(251,191,36,0.2)}
+  .vh{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+  .vid{font-family:var(--mono);font-size:11px;color:var(--text)}
+  .vd{font-size:11px;color:var(--muted);font-family:var(--mono)}
+  .vp{font-size:12px;color:var(--dim);margin-top:3px}
+  .pbar{height:5px;background:var(--s3);border-radius:3px;overflow:hidden;margin:5px 0}
+  .pf{height:100%;border-radius:3px}
+  .crow{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)}
+  .crow:last-child{border:none}
+  .cn{font-family:var(--mono);font-size:12px;color:var(--text)}
+  .cr{display:flex;align-items:center;gap:8px}
+  .commit-box{background:var(--s2);border-radius:8px;padding:12px 14px}
+  .chash{font-family:var(--mono);font-size:15px;color:var(--teal);font-weight:600;letter-spacing:.04em}
+  .cfile{font-family:var(--mono);font-size:12px;color:var(--purple-l);margin:3px 0}
+  .cmsg{font-size:12px;color:var(--dim)}
+  .cmeta{font-size:11px;color:var(--muted);margin-top:5px}
+  .bnode{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);font-size:11px}
+  .bnode:last-child{border:none}
+  .ndot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+  .nid{font-family:var(--mono);color:var(--dim);flex:1}
+  .ndepth{font-size:10px;color:var(--muted)}
+  .action{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--border)}
+  .action:last-child{border:none}
+  .an{width:22px;height:22px;border-radius:50%;background:var(--purple-d);color:var(--purple-l);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
+  .atitle{font-size:12px;font-weight:500;color:var(--text);margin-bottom:2px}
+  .adesc{font-size:11px;color:var(--muted);font-family:var(--mono)}
+  .sc-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:11px}
+  .sc-row:last-child{border:none}
+  .sct{font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:4px;flex-shrink:0}
+  .scsafe{background:var(--green-d);color:var(--green)}
+  .scbrk{background:var(--red-d);color:var(--red)}
+  .scfield{font-family:var(--mono);color:var(--dim);flex:1}
+  .sctype{font-size:10px;color:var(--muted)}
+  .ai-card{background:var(--s2);border-radius:8px;padding:16px;border:1px solid rgba(74,222,128,0.15)}
+  .ai-num{font-size:28px;font-weight:700;margin:6px 0 2px}
+  .ai-l{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+  .ai-sub{font-size:11px;color:var(--muted);margin-top:2px}
+  .stat-box{text-align:center;padding:12px;background:var(--s2);border-radius:7px}
+  .stat-l{font-size:10px;color:var(--muted);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em}
+  .stat-v{font-size:22px;font-weight:600}
+  .kv{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px}
+  .kv:last-child{border:none}
+  .kl{color:var(--muted)}
+  .kv-val{font-family:var(--mono);color:var(--text)}
+  .sec-h{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:12px}
+  .code-block{background:var(--s2);border-radius:6px;padding:12px;font-family:var(--mono);font-size:11px;line-height:1.8;color:var(--dim)}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="topbar">
+    <div class="logo">Data <span>Contract</span> Enforcer <span style="color:var(--muted);font-weight:400;font-size:12px;margin-left:8px">TRP1 — Week 7</span></div>
+    <div class="nav">
+      <button class="nb on"  onclick="show('overview')">Overview</button>
+      <button class="nb"     onclick="show('violations')">Violations</button>
+      <button class="nb"     onclick="show('blame')">Blame chain</button>
+      <button class="nb"     onclick="show('contracts')">Contracts</button>
+      <button class="nb"     onclick="show('ai')">AI extensions</button>
+      <button class="nb"     onclick="show('schema')">Schema evolution</button>
+      <button class="nb"     onclick="show('report')">Report</button>
+    </div>
+    <div class="topbar-right">
+      <span><span class="dot-live"></span>2 violations active</span>
+      <span>Run: 2026-04-04 &nbsp;|&nbsp; git c4fbd663</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- OVERVIEW -->
+    <div class="sec on" id="s-overview">
+      <div class="g6">
+        <div class="metric"><div class="ml">Health score</div><div class="mv" style="color:var(--red)">38.8</div><div class="ms">CRITICAL / 100</div></div>
+        <div class="metric"><div class="ml">Checks run</div><div class="mv" style="color:var(--purple-l)">169</div><div class="ms">4 contracts</div></div>
+        <div class="metric"><div class="ml">Passed</div><div class="mv" style="color:var(--green)">167</div><div class="ms">98.8%</div></div>
+        <div class="metric"><div class="ml">Failed</div><div class="mv" style="color:var(--red)">2</div><div class="ms">confidence field</div></div>
+        <div class="metric"><div class="ml">Blast radius</div><div class="mv" style="color:var(--amber)">9</div><div class="ms">nodes contaminated</div></div>
+        <div class="metric"><div class="ml">Embed drift</div><div class="mv" style="color:var(--green)">0.007</div><div class="ms">PASS — threshold 0.15</div></div>
+      </div>
+      <div class="g2">
+        <div class="card">
+          <div class="ct">Active violations</div>
+          <div class="viol crit">
+            <div class="vh"><span class="vid">confidence.max</span><span class="badge bc">CRITICAL</span></div>
+            <div class="vd">actual: max=94.3 &nbsp;|&nbsp; expected: max≤1.0 &nbsp;|&nbsp; 15 records</div>
+            <div class="vp">Confidence is on the 0–100 scale. Contract requires 0.0–1.0</div>
+          </div>
+          <div class="viol hi">
+            <div class="vh"><span class="vid">confidence.drift</span><span class="badge bh">HIGH</span></div>
+            <div class="vd">z_score=690.89 &nbsp;|&nbsp; baseline=0.887 &nbsp;|&nbsp; current=27.39</div>
+            <div class="vp">Distribution shifted 690 standard deviations from baseline</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="ct">Contract coverage</div>
+          <div class="crow"><span class="cn">extractions.yaml</span><div class="cr"><span style="font-size:11px;color:var(--muted)">19 clauses</span><span class="badge bg">W3</span></div></div>
+          <div class="pbar"><div class="pf" style="width:100%;background:var(--green)"></div></div>
+          <div class="crow"><span class="cn">events.yaml</span><div class="cr"><span style="font-size:11px;color:var(--muted)">56 clauses</span><span class="badge bg">W5</span></div></div>
+          <div class="pbar"><div class="pf" style="width:100%;background:var(--green)"></div></div>
+          <div class="crow"><span class="cn">lineage_snapshots.yaml</span><div class="cr"><span style="font-size:11px;color:var(--muted)">13 clauses</span><span class="badge bg">W4</span></div></div>
+          <div class="pbar"><div class="pf" style="width:100%;background:var(--green)"></div></div>
+          <div class="crow"><span class="cn">intent_records.yaml</span><div class="cr"><span style="font-size:11px;color:var(--muted)">10 clauses</span><span class="badge bg">W1</span></div></div>
+          <div class="pbar"><div class="pf" style="width:100%;background:var(--green)"></div></div>
+          <div class="crow"><span class="cn">langsmith_traces.yaml</span><div class="cr"><span style="font-size:11px;color:var(--muted)">pending</span><span class="badge bh">partial</span></div></div>
+          <div class="pbar"><div class="pf" style="width:55%;background:var(--amber)"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIOLATIONS -->
+    <div class="sec" id="s-violations">
+      <div class="sec-h">Violation detail — Week 3 extractions</div>
+      <div class="viol crit" style="margin-bottom:14px">
+        <div class="vh"><span class="vid">week7-extractions.extracted_facts_0_confidence.max</span><span class="badge bc">CRITICAL</span></div>
+        <div class="vd" style="margin-bottom:10px">actual: max=94.3 &nbsp;&nbsp; expected: max≤1.0 &nbsp;&nbsp; records failing: 15</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+          <div style="background:var(--s2);border-radius:6px;padding:10px"><div style="font-size:10px;color:var(--muted);margin-bottom:3px">CHECK TYPE</div><div style="font-size:13px;font-family:var(--mono);color:var(--text)">range</div></div>
+          <div style="background:var(--s2);border-radius:6px;padding:10px"><div style="font-size:10px;color:var(--muted);margin-bottom:3px">ACTUAL MAX</div><div style="font-size:13px;font-family:var(--mono);color:var(--red)">94.3</div></div>
+          <div style="background:var(--s2);border-radius:6px;padding:10px"><div style="font-size:10px;color:var(--muted);margin-bottom:3px">CONTRACT MAX</div><div style="font-size:13px;font-family:var(--mono);color:var(--green)">1.0</div></div>
+        </div>
+      </div>
+      <div class="viol hi">
+        <div class="vh"><span class="vid">week7-extractions.extracted_facts_0_confidence.drift</span><span class="badge bh">HIGH</span></div>
+        <div class="vd" style="margin-bottom:10px">z_score=690.89 &nbsp;&nbsp; baseline_mean=0.887 &nbsp;&nbsp; current_mean=27.39</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px">
+          <div style="background:var(--s2);border-radius:6px;padding:10px"><div style="font-size:10px;color:var(--muted);margin-bottom:3px">CHECK TYPE</div><div style="font-size:13px;font-family:var(--mono);color:var(--text)">statistical drift</div></div>
+          <div style="background:var(--s2);border-radius:6px;padding:10px"><div style="font-size:10px;color:var(--muted);margin-bottom:3px">Z-SCORE</div><div style="font-size:13px;font-family:var(--mono);color:var(--red)">690.89</div></div>
+          <div style="background:var(--s2);border-radius:6px;padding:10px"><div style="font-size:10px;color:var(--muted);margin-bottom:3px">BASELINE MEAN</div><div style="font-size:13px;font-family:var(--mono);color:var(--green)">0.887</div></div>
+          <div style="background:var(--s2);border-radius:6px;padding:10px"><div style="font-size:10px;color:var(--muted);margin-bottom:3px">CURRENT MEAN</div><div style="font-size:13px;font-family:var(--mono);color:var(--red)">27.39</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BLAME -->
+    <div class="sec" id="s-blame">
+      <div class="sec-h">Attribution — confidence violation</div>
+      <div class="g2">
+        <div>
+          <div class="card" style="margin-bottom:12px">
+            <div class="ct">Commit identified</div>
+            <div class="commit-box">
+              <div class="chash">c4fbd6639e48</div>
+              <div class="cfile">src/agents/surveyor.py</div>
+              <div class="cmsg">feat: update extraction confidence handling</div>
+              <div class="cmeta">confidence score: 0.85 &nbsp;|&nbsp; rank: 1 of 1</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ct">Registry subscribers affected</div>
+            <div class="kv"><span class="kl">week4-cartographer</span><span class="badge bc">ENFORCE</span></div>
+            <div class="kv"><span class="kl">week7-enforcer-ai-extensions</span><span class="badge bh">AUDIT</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="ct">Blast radius — 9 nodes</div>
+          <div class="bnode"><div class="ndot" style="background:var(--red)"></div><div class="nid">file::src/agents/surveyor.py</div><div class="ndepth">origin</div></div>
+          <div class="bnode"><div class="ndot" style="background:var(--amber)"></div><div class="nid">file::src/agents/hydrologist.py</div><div class="ndepth">depth 1</div></div>
+          <div class="bnode"><div class="ndot" style="background:var(--amber)"></div><div class="nid">file::src/orchestrator.py</div><div class="ndepth">depth 1</div></div>
+          <div class="bnode"><div class="ndot" style="background:var(--amber)"></div><div class="nid">table::.cartography/lineage_graph.json</div><div class="ndepth">depth 1</div></div>
+          <div class="bnode"><div class="ndot" style="background:var(--purple)"></div><div class="nid">file::src/graph/lineage_graph.py</div><div class="ndepth">depth 2</div></div>
+          <div class="bnode"><div class="ndot" style="background:var(--purple)"></div><div class="nid">file::src/phase4.py</div><div class="ndepth">depth 2</div></div>
+          <div class="bnode"><div class="ndot" style="background:var(--muted)"></div><div class="nid">table::.cartography/CODEBASE.md</div><div class="ndepth">depth 3</div></div>
+          <div class="bnode"><div class="ndot" style="background:var(--muted)"></div><div class="nid">table::.cartography/module_graph.json</div><div class="ndepth">depth 3</div></div>
+          <div class="bnode"><div class="ndot" style="background:var(--muted)"></div><div class="nid">file::src/agents/navigator.py</div><div class="ndepth">depth 3</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTRACTS -->
+    <div class="sec" id="s-contracts">
+      <div class="sec-h">Generated contracts</div>
+      <div class="g2">
+        <div class="card">
+          <div class="ct">extractions.yaml — Week 3 <span class="badge bg" style="margin-left:4px">19 clauses</span></div>
+          <div class="code-block">
+            <span style="color:var(--dim)">schema:</span><br>
+            &nbsp;&nbsp;<span style="color:var(--purple-l)">extracted_facts_0_confidence</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--teal)">type</span>: number<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--teal)">minimum</span>: <span style="color:var(--green)">0.0</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--teal)">maximum</span>: <span style="color:var(--green)">1.0</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--teal)">required</span>: <span style="color:var(--green)">true</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--teal)">statistics</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--teal)">mean</span>: <span style="color:var(--amber)">0.8872</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--teal)">std</span>: <span style="color:var(--amber)">0.0339</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="ct">events.yaml — Week 5 <span class="badge bg" style="margin-left:4px">56 clauses</span></div>
+          <div class="code-block">
+            <span style="color:var(--dim)">schema:</span><br>
+            &nbsp;&nbsp;<span style="color:var(--purple-l)">event_type</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--teal)">type</span>: string<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--teal)">required</span>: <span style="color:var(--green)">true</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--teal)">enum</span>: [ApplicationSubmitted,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CreditAnalysisCompleted, ...]<br>
+            &nbsp;&nbsp;<span style="color:var(--purple-l)">sequence_number</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--teal)">minimum</span>: <span style="color:var(--green)">1</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--teal)">type</span>: integer
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ct">Contract registry — 7 subscriptions</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px">
+          <div style="background:var(--s2);border-radius:7px;padding:11px;font-size:11px"><div style="font-weight:500;color:var(--text);margin-bottom:3px">W3 → W4 Cartographer</div><div style="color:var(--muted);font-family:var(--mono);margin-bottom:6px">extracted_facts.confidence</div><span class="badge bc">ENFORCE</span></div>
+          <div style="background:var(--s2);border-radius:7px;padding:11px;font-size:11px"><div style="font-weight:500;color:var(--text);margin-bottom:3px">W3 → W7 AI Extensions</div><div style="color:var(--muted);font-family:var(--mono);margin-bottom:6px">extracted_facts.confidence</div><span class="badge bh">AUDIT</span></div>
+          <div style="background:var(--s2);border-radius:7px;padding:11px;font-size:11px"><div style="font-weight:500;color:var(--text);margin-bottom:3px">W4 → W7 Attributor</div><div style="color:var(--muted);font-family:var(--mono);margin-bottom:6px">edges[].source, git_commit</div><span class="badge bc">ENFORCE</span></div>
+          <div style="background:var(--s2);border-radius:7px;padding:11px;font-size:11px"><div style="font-weight:500;color:var(--text);margin-bottom:3px">W5 → W7 ContractRunner</div><div style="color:var(--muted);font-family:var(--mono);margin-bottom:6px">event_type, sequence_number</div><span class="badge bc">ENFORCE</span></div>
+          <div style="background:var(--s2);border-radius:7px;padding:11px;font-size:11px"><div style="font-weight:500;color:var(--text);margin-bottom:3px">LangSmith → W7 AI</div><div style="color:var(--muted);font-family:var(--mono);margin-bottom:6px">run_type, total_tokens</div><span class="badge bh">AUDIT</span></div>
+          <div style="background:var(--s2);border-radius:7px;padding:11px;font-size:11px"><div style="font-weight:500;color:var(--text);margin-bottom:3px">W2 → W7 AI Extensions</div><div style="color:var(--muted);font-family:var(--mono);margin-bottom:6px">overall_verdict, confidence</div><span class="badge bh">AUDIT</span></div>
+          <div style="background:var(--s2);border-radius:7px;padding:11px;font-size:11px"><div style="font-weight:500;color:var(--text);margin-bottom:3px">W1 → W2 Courtroom</div><div style="color:var(--muted);font-family:var(--mono);margin-bottom:6px">code_refs[].file</div><span class="badge bt">WARN</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI -->
+    <div class="sec" id="s-ai">
+      <div class="sec-h">AI contract extensions — real data</div>
+      <div class="g3">
+        <div class="ai-card">
+          <div class="ai-l">Embedding drift</div>
+          <div class="ai-num" style="color:var(--green)">0.007</div>
+          <div class="ai-sub">threshold: 0.15 &nbsp;|&nbsp; 77 texts sampled</div>
+          <div style="margin-top:10px"><span class="badge bg">PASS</span></div>
+          <div style="margin-top:10px;font-size:11px;color:var(--muted)">Cosine distance from stored centroid of Week 3 extraction texts. Topics of Ethiopian corpus documents have not shifted.</div>
+        </div>
+        <div class="ai-card">
+          <div class="ai-l">Prompt input validation</div>
+          <div class="ai-num" style="color:var(--green)">50 / 50</div>
+          <div class="ai-sub">0 quarantined</div>
+          <div style="margin-top:10px"><span class="badge bg">PASS</span></div>
+          <div style="margin-top:10px;font-size:11px;color:var(--muted)">All 50 extraction records have valid doc_id and source_path. Zero records moved to quarantine.</div>
+        </div>
+        <div class="ai-card">
+          <div class="ai-l">LLM output schema</div>
+          <div class="ai-num" style="color:var(--green)">0.00%</div>
+          <div class="ai-sub">violation rate &nbsp;|&nbsp; 1 verdict</div>
+          <div style="margin-top:10px"><span class="badge bg">PASS</span></div>
+          <div style="margin-top:10px;font-size:11px;color:var(--muted)">Week 2 verdict: overall_verdict=WARN ✓, scores 1–5 ✓, confidence 0.0–1.0 ✓.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCHEMA -->
+    <div class="sec" id="s-schema">
+      <div class="sec-h">Schema evolution — extractions contract</div>
+      <div class="g2">
+        <div class="card">
+          <div class="ct">12 changes &nbsp;|&nbsp; <span style="color:var(--red)">1 breaking</span> &nbsp;|&nbsp; <span style="color:var(--green)">11 safe</span></div>
+          <div class="sc-row"><span class="sct scbrk">BREAKING</span><span class="scfield">source_hash</span><span class="sctype">remove_enum_value</span></div>
+          <div class="sc-row"><span class="sct scsafe">safe</span><span class="scfield">doc_id</span><span class="sctype">widen_type</span></div>
+          <div class="sc-row"><span class="sct scsafe">safe</span><span class="scfield">extracted_facts_0_text</span><span class="sctype">widen_type</span></div>
+          <div class="sc-row"><span class="sct scsafe">safe</span><span class="scfield">extraction_model</span><span class="sctype">widen_type</span></div>
+          <div class="sc-row"><span class="sct scsafe">safe</span><span class="scfield">entities_0_type</span><span class="sctype">widen_type</span></div>
+          <div class="sc-row"><span class="sct scsafe">safe</span><span class="scfield">entities_0_name</span><span class="sctype">widen_type</span></div>
+          <div style="font-size:11px;color:var(--muted);padding-top:8px">+ 6 more safe changes</div>
+        </div>
+        <div class="card">
+          <div class="ct">Migration plan — source_hash breaking change</div>
+          <div style="background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.2);border-radius:7px;padding:11px;margin-bottom:12px;font-size:11px">
+            <div style="font-weight:600;color:var(--red);margin-bottom:3px">remove_enum_value — BREAKING</div>
+            <div style="color:var(--muted)">Rollback: revert → restore snapshot 20260403T150343 → re-validate</div>
+          </div>
+          <div style="font-size:11px;color:var(--muted);line-height:1.9">
+            1. Notify all registry subscribers<br>
+            2. Deploy migration script to convert existing data<br>
+            3. Update all consumers before removing old format<br>
+            4. Re-establish statistical baseline<br>
+            5. Monitor violation_log for 1 week post-migration<br>
+            6. Require subscriber acknowledgement before removal
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPORT -->
+    <div class="sec" id="s-report">
+      <div class="sec-h">Enforcer report — auto-generated</div>
+      <div class="g2">
+        <div class="card">
+          <div class="ct">Data health score</div>
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:10px">
+            <span style="font-size:52px;font-weight:700;color:var(--red);line-height:1">38.8</span>
+            <span style="font-size:18px;color:var(--muted)">/100</span>
+          </div>
+          <div style="height:7px;background:var(--s3);border-radius:4px;overflow:hidden;margin-bottom:12px">
+            <div style="width:38.8%;height:100%;background:var(--red);border-radius:4px"></div>
+          </div>
+          <div style="font-size:13px;color:var(--dim)">System data health is CRITICAL — immediate action required.</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:5px">Formula: (passed/total × 100) − 20 per CRITICAL violation</div>
+        </div>
+        <div class="card">
+          <div class="ct">Recommended actions</div>
+          <div class="action">
+            <div class="an">1</div>
+            <div><div class="atitle">Fix confidence scale</div><div class="adesc">outputs/week3/extractions.jsonl — float 0.0–1.0, not int 0–100. Revert c4fbd663.</div></div>
+          </div>
+          <div class="action">
+            <div class="an">2</div>
+            <div><div class="atitle">Refresh baseline</div><div class="adesc">Re-run generator.py on corrected data. Baseline mean resets to ~0.887.</div></div>
+          </div>
+          <div class="action">
+            <div class="an">3</div>
+            <div><div class="atitle">Update registry process</div><div class="adesc">Require registry update in CI before any confidence-related deploy.</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ct">Run summary</div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px">
+          <div class="stat-box"><div class="stat-l">Total checks</div><div class="stat-v" style="color:var(--text)">169</div></div>
+          <div class="stat-box"><div class="stat-l">Passed</div><div class="stat-v" style="color:var(--green)">167</div></div>
+          <div class="stat-box"><div class="stat-l">Failed</div><div class="stat-v" style="color:var(--red)">2</div></div>
+          <div class="stat-box"><div class="stat-l">Violations</div><div class="stat-v" style="color:var(--amber)">8</div></div>
+          <div class="stat-box"><div class="stat-l">AI status</div><div class="stat-v" style="color:var(--green);font-size:14px;margin-top:5px">PASS</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const tabs=['overview','violations','blame','contracts','ai','schema','report'];
+function show(id){
+  tabs.forEach(t=>document.getElementById('s-'+t).classList.toggle('on',t===id));
+  document.querySelectorAll('.nb').forEach((b,i)=>b.classList.toggle('on',tabs[i]===id));
+}
+</script>
+</body>
+</html>
