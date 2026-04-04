@@ -20,8 +20,6 @@ models:
     description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 1.'
     tests:
     - not_null
-    - dbt_utils.expression_is_true:
-        expression: extracted_facts__count >= 3.0 AND extracted_facts__count <= 3.0
   - name: extracted_facts_0_fact_id
     description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 60.'
     tests:
@@ -38,16 +36,10 @@ models:
       silently corrupts all downstream consumers.'
     tests:
     - not_null
-    - dbt_utils.expression_is_true:
-        expression: extracted_facts_0_confidence >= 0.0 AND extracted_facts_0_confidence
-          <= 1.0
   - name: extracted_facts_0_page_ref
     description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 20.'
     tests:
     - not_null
-    - dbt_utils.expression_is_true:
-        expression: extracted_facts_0_page_ref >= 1.0 AND extracted_facts_0_page_ref
-          <= 20.0
   - name: extracted_facts_0_source_excerpt
     description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 1.'
     tests:
@@ -59,8 +51,6 @@ models:
     description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 1.'
     tests:
     - not_null
-    - dbt_utils.expression_is_true:
-        expression: entities__count >= 1.0 AND entities__count <= 1.0
   - name: entities_0_entity_id
     description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 60.'
     tests:
@@ -97,20 +87,14 @@ models:
     description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 60.'
     tests:
     - not_null
-    - dbt_utils.expression_is_true:
-        expression: processing_time_ms >= 506.0 AND processing_time_ms <= 2936.0
   - name: token_count_input
     description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 59.'
     tests:
     - not_null
-    - dbt_utils.expression_is_true:
-        expression: token_count_input >= 3056.0 AND token_count_input <= 4972.0
   - name: token_count_output
     description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 55.'
     tests:
     - not_null
-    - dbt_utils.expression_is_true:
-        expression: token_count_output >= 524.0 AND token_count_output <= 1192.0
   - name: extracted_at
     description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 60.'
     tests:

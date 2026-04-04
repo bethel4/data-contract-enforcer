@@ -1,0 +1,25 @@
+[project]
+name = "week7-data-contract-enforcer"
+version = "1.0.0"
+description = "Schema Integrity & Lineage Attribution System for AI Platform"
+requires-python = ">=3.11"
+dependencies = [
+    "pandas>=2.0",
+    "pyyaml>=6.0",
+    "numpy>=1.24",
+    "scikit-learn>=1.3",
+    "reportlab>=4.0",
+    "python-dateutil>=2.8",
+    "openai>=2.30.0",
+]
+
+[project.scripts]
+generate  = "contracts.generator:main"
+validate  = "contracts.runner:main"
+attribute = "contracts.attributor:main"
+analyze   = "contracts.schema_analyzer:main"
+ai-check  = "contracts.ai_extensions:main"
+report    = "contracts.report_generator:main"
+
+[tool.uv]
+dev-dependencies = ["pytest>=7.0", "black>=23.0"]

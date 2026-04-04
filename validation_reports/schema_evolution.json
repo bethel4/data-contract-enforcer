@@ -1,0 +1,180 @@
+{
+  "analysis_id": "850d6526-2702-4873-a226-f46ff60ea21e",
+  "contract_id": "week7-extractions",
+  "analyzed_at": "2026-04-03T17:52:24.531258+00:00",
+  "old_snapshot": "20260403T160747",
+  "new_snapshot": "20260403T161308",
+  "total_changes": 12,
+  "breaking_changes": 0,
+  "safe_changes": 12,
+  "changes": [
+    {
+      "field": "extracted_facts_0_text",
+      "change_type": "widen_type",
+      "compatibility": "USUALLY_COMPATIBLE",
+      "old_value": "\u2014",
+      "new_value": "\u2014",
+      "breaking": false,
+      "required_action": "Validate no precision loss. Re-run statistical checks.",
+      "registry_subscribers_affected": [],
+      "migration_checklist": [
+        "No action required \u2014 backward-compatible change."
+      ],
+      "rollback_plan": "N/A"
+    },
+    {
+      "field": "entities_0_name",
+      "change_type": "widen_type",
+      "compatibility": "USUALLY_COMPATIBLE",
+      "old_value": "\u2014",
+      "new_value": "\u2014",
+      "breaking": false,
+      "required_action": "Validate no precision loss. Re-run statistical checks.",
+      "registry_subscribers_affected": [],
+      "migration_checklist": [
+        "No action required \u2014 backward-compatible change."
+      ],
+      "rollback_plan": "N/A"
+    },
+    {
+      "field": "extracted_facts_0_source_excerpt",
+      "change_type": "widen_type",
+      "compatibility": "USUALLY_COMPATIBLE",
+      "old_value": "\u2014",
+      "new_value": "\u2014",
+      "breaking": false,
+      "required_action": "Validate no precision loss. Re-run statistical checks.",
+      "registry_subscribers_affected": [],
+      "migration_checklist": [
+        "No action required \u2014 backward-compatible change."
+      ],
+      "rollback_plan": "N/A"
+    },
+    {
+      "field": "extraction_model",
+      "change_type": "widen_type",
+      "compatibility": "USUALLY_COMPATIBLE",
+      "old_value": "\u2014",
+      "new_value": "\u2014",
+      "breaking": false,
+      "required_action": "Validate no precision loss. Re-run statistical checks.",
+      "registry_subscribers_affected": [],
+      "migration_checklist": [
+        "No action required \u2014 backward-compatible change."
+      ],
+      "rollback_plan": "N/A"
+    },
+    {
+      "field": "extracted_at",
+      "change_type": "widen_type",
+      "compatibility": "USUALLY_COMPATIBLE",
+      "old_value": "\u2014",
+      "new_value": "\u2014",
+      "breaking": false,
+      "required_action": "Validate no precision loss. Re-run statistical checks.",
+      "registry_subscribers_affected": [],
+      "migration_checklist": [
+        "No action required \u2014 backward-compatible change."
+      ],
+      "rollback_plan": "N/A"
+    },
+    {
+      "field": "source_hash",
+      "change_type": "widen_type",
+      "compatibility": "USUALLY_COMPATIBLE",
+      "old_value": "\u2014",
+      "new_value": "\u2014",
+      "breaking": false,
+      "required_action": "Validate no precision loss. Re-run statistical checks.",
+      "registry_subscribers_affected": [],
+      "migration_checklist": [
+        "No action required \u2014 backward-compatible change."
+      ],
+      "rollback_plan": "N/A"
+    },
+    {
+      "field": "extracted_facts_0_fact_id",
+      "change_type": "widen_type",
+      "compatibility": "USUALLY_COMPATIBLE",
+      "old_value": "\u2014",
+      "new_value": "\u2014",
+      "breaking": false,
+      "required_action": "Validate no precision loss. Re-run statistical checks.",
+      "registry_subscribers_affected": [],
+      "migration_checklist": [
+        "No action required \u2014 backward-compatible change."
+      ],
+      "rollback_plan": "N/A"
+    },
+    {
+      "field": "entities_0_canonical_value",
+      "change_type": "widen_type",
+      "compatibility": "USUALLY_COMPATIBLE",
+      "old_value": "\u2014",
+      "new_value": "\u2014",
+      "breaking": false,
+      "required_action": "Validate no precision loss. Re-run statistical checks.",
+      "registry_subscribers_affected": [],
+      "migration_checklist": [
+        "No action required \u2014 backward-compatible change."
+      ],
+      "rollback_plan": "N/A"
+    },
+    {
+      "field": "source_path",
+      "change_type": "widen_type",
+      "compatibility": "USUALLY_COMPATIBLE",
+      "old_value": "\u2014",
+      "new_value": "\u2014",
+      "breaking": false,
+      "required_action": "Validate no precision loss. Re-run statistical checks.",
+      "registry_subscribers_affected": [],
+      "migration_checklist": [
+        "No action required \u2014 backward-compatible change."
+      ],
+      "rollback_plan": "N/A"
+    },
+    {
+      "field": "entities_0_entity_id",
+      "change_type": "widen_type",
+      "compatibility": "USUALLY_COMPATIBLE",
+      "old_value": "\u2014",
+      "new_value": "\u2014",
+      "breaking": false,
+      "required_action": "Validate no precision loss. Re-run statistical checks.",
+      "registry_subscribers_affected": [],
+      "migration_checklist": [
+        "No action required \u2014 backward-compatible change."
+      ],
+      "rollback_plan": "N/A"
+    },
+    {
+      "field": "doc_id",
+      "change_type": "widen_type",
+      "compatibility": "USUALLY_COMPATIBLE",
+      "old_value": "\u2014",
+      "new_value": "\u2014",
+      "breaking": false,
+      "required_action": "Validate no precision loss. Re-run statistical checks.",
+      "registry_subscribers_affected": [],
+      "migration_checklist": [
+        "No action required \u2014 backward-compatible change."
+      ],
+      "rollback_plan": "N/A"
+    },
+    {
+      "field": "entities_0_type",
+      "change_type": "widen_type",
+      "compatibility": "USUALLY_COMPATIBLE",
+      "old_value": "\u2014",
+      "new_value": "\u2014",
+      "breaking": false,
+      "required_action": "Validate no precision loss. Re-run statistical checks.",
+      "registry_subscribers_affected": [],
+      "migration_checklist": [
+        "No action required \u2014 backward-compatible change."
+      ],
+      "rollback_plan": "N/A"
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+# contract_registry/subscriptions.yaml
+# Every inter-system data dependency must be listed here.
+# A subscription is a consumer's formal declaration of dependency on a contract.
+# Maintained manually. Update when adding or removing consumers.
+
+subscriptions:
+
+  - contract_id: week3-document-refinery-extractions
+    subscriber_id: week4-cartographer
+    subscriber_team: week4
+    fields_consumed: [doc_id, extracted_facts, extraction_model, entities]
+    breaking_fields:
+      - field: extracted_facts.confidence
+        reason: >
+          Used as edge weight in the lineage graph. A scale change from
+          0.0-1.0 to 0-100 inflates all edge weights by 100x, causing every
+          edge filter to pass unconditionally and making the graph unreliable.
+      - field: doc_id
+        reason: >
+          Primary key used as node identity in the lineage graph. Renaming
+          or changing format breaks all downstream node lookups.
+      - field: entities[].entity_id
+        reason: >
+          Used to cross-reference entity nodes in the cartography graph.
+    validation_mode: ENFORCE
+    registered_at: '2026-01-10T09:00:00Z'
+    contact: week4-team@org.com
+
+  - contract_id: week3-document-refinery-extractions
+    subscriber_id: week7-enforcer-ai-extensions
+    subscriber_team: week7
+    fields_consumed: [extracted_facts.text, extracted_facts.confidence, doc_id]
+    breaking_fields:
+      - field: extracted_facts.confidence
+        reason: >
+          AI extension embedding drift baseline computed from confidence-weighted
+          text samples. Scale change invalidates all historical baselines.
+      - field: extracted_facts.text
+        reason: >
+          Source of text for embedding drift detection. Semantic shift in
+          content changes the centroid baseline.
+    validation_mode: AUDIT
+    registered_at: '2026-01-10T09:00:00Z'
+    contact: week7-team@org.com
+
+  - contract_id: week4-lineage-snapshots
+    subscriber_id: week7-violation-attributor
+    subscriber_team: week7
+    fields_consumed: [nodes, edges, git_commit, snapshot_id]
+    breaking_fields:
+      - field: edges[].source
+        reason: >
+          BFS traversal depends on source node IDs matching the file::path
+          format. Changing the ID format breaks all graph traversals.
+      - field: edges[].target
+        reason: Same as source — BFS downstream traversal depends on format.
+      - field: edges[].relationship
+        reason: >
+          ViolationAttributor filters edges by relationship type (PRODUCES,
+          READS, WRITES). Adding unlisted values silently drops edges from
+          traversal.
+      - field: git_commit
+        reason: >
+          Used as the anchor for git blame queries. Must be exactly 40 hex
+          chars. Truncation breaks all blame chain attribution.
+    validation_mode: ENFORCE
+    registered_at: '2026-01-10T09:00:00Z'
+    contact: week7-team@org.com
+
+  - contract_id: week5-events
+    subscriber_id: week7-contract-runner
+    subscriber_team: week7
+    fields_consumed: [event_id, event_type, sequence_number, occurred_at, recorded_at, payload]
+    breaking_fields:
+      - field: event_type
+        reason: >
+          Contract runner validates event_type against registered PascalCase
+          values. New types not in the registry fail validation.
+      - field: sequence_number
+        reason: >
+          Monotonic ordering per aggregate_id is a contract invariant.
+          Gaps or duplicates indicate event store corruption.
+      - field: recorded_at
+        reason: >
+          Temporal integrity check: recorded_at >= occurred_at. Inversion
+          indicates clock skew or data manipulation.
+    validation_mode: ENFORCE
+    registered_at: '2026-01-10T09:00:00Z'
+    contact: week7-team@org.com
+
+  - contract_id: langsmith-trace-records
+    subscriber_id: week7-ai-extensions
+    subscriber_team: week7
+    fields_consumed: [run_type, total_tokens, prompt_tokens, completion_tokens, total_cost, start_time, end_time]
+    breaking_fields:
+      - field: run_type
+        reason: >
+          AI extensions filter traces by run_type. Adding unlisted values
+          produces incorrect cost and token accounting.
+      - field: total_tokens
+        reason: >
+          Token accounting check: total = prompt + completion. Violation
+          indicates billing discrepancy.
+    validation_mode: AUDIT
+    registered_at: '2026-01-10T09:00:00Z'
+    contact: week7-team@org.com
+
+  - contract_id: week2-verdict-records
+    subscriber_id: week7-ai-extensions
+    subscriber_team: week7
+    fields_consumed: [verdict_id, overall_verdict, overall_score, confidence, scores]
+    breaking_fields:
+      - field: overall_verdict
+        reason: >
+          LLM output schema check validates against PASS|FAIL|WARN enum.
+          Any deviation counts as a schema violation in the violation rate metric.
+      - field: confidence
+        reason: >
+          Used to track LLM output reliability. Must remain float 0.0-1.0.
+    validation_mode: AUDIT
+    registered_at: '2026-01-10T09:00:00Z'
+    contact: week7-team@org.com
+
+  - contract_id: week1-intent-records
+    subscriber_id: week2-digital-courtroom
+    subscriber_team: week2
+    fields_consumed: [intent_id, code_refs, governance_tags]
+    breaking_fields:
+      - field: code_refs[].file
+        reason: >
+          Week 2 verdict target_ref is set to code_refs[].file. Changing
+          path format breaks cross-reference linking between systems.
+      - field: code_refs[].confidence
+        reason: >
+          Used to weight evidence in verdict scoring. Must remain 0.0-1.0.
+    validation_mode: WARN
+    registered_at: '2026-01-10T09:00:00Z'
+    contact: week2-team@org.com
