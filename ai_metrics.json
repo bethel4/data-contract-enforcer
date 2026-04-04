@@ -1,0 +1,26 @@
+{
+  "run_date": "2026-04-04T07:19:32.881636+00:00",
+  "mode": "AUDIT",
+  "embedding_drift": {
+    "status": "BASELINE_SET",
+    "drift_score": 0.0,
+    "threshold": 0.15,
+    "sample_size": 200,
+    "note": "Baseline set. Run again to detect drift."
+  },
+  "prompt_input_validation": {
+    "valid": 26,
+    "invalid": 0,
+    "quarantine_path": null,
+    "status": "PASS"
+  },
+  "llm_output_schema": {
+    "total_outputs": 1,
+    "schema_violations": 0,
+    "violation_rate": 0.0,
+    "trend": "unknown",
+    "baseline_rate": null,
+    "status": "PASS"
+  },
+  "overall_ai_status": "PASS"
+}
