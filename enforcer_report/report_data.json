@@ -1,16 +1,16 @@
 {
-  "report_id": "693e8fcc-1ff1-4bc2-9592-6a389d67bbce",
-  "generated_at": "2026-04-04T07:47:59.019059+00:00",
+  "report_id": "51adf8f3-d80a-48fc-8e84-9e5b05837e85",
+  "generated_at": "2026-04-04T17:57:42.393835+00:00",
   "generator": "contracts/report_generator.py",
   "auto_generated": true,
   "data_health_score": 0.0,
   "health_narrative": "System data health is CRITICAL \u2014 immediate action required.",
   "summary": {
-    "total_checks": 33,
-    "passed": 32,
-    "failed": 1,
+    "total_checks": 100,
+    "passed": 98,
+    "failed": 2,
     "warned": 0,
-    "violations": 6
+    "violations": 9
   },
   "top_violations": [
     {
@@ -46,52 +46,34 @@
   ],
   "schema_changes": [
     {
-      "field": "extracted_facts_0_fact_id",
-      "type": "widen_type",
-      "compat": "USUALLY_COMPATIBLE",
-      "action": "Validate no precision loss. Re-run statistical checks."
+      "field": "entities_0_canonical_value",
+      "type": "remove_field",
+      "compat": "BREAKING",
+      "action": "Two-sprint deprecation minimum. Each registry subscriber must acknowledge before field is dropped."
     },
     {
-      "field": "doc_id",
-      "type": "widen_type",
-      "compat": "USUALLY_COMPATIBLE",
-      "action": "Validate no precision loss. Re-run statistical checks."
+      "field": "entities_0_entity_id",
+      "type": "remove_field",
+      "compat": "BREAKING",
+      "action": "Two-sprint deprecation minimum. Each registry subscriber must acknowledge before field is dropped."
     },
     {
-      "field": "extracted_at",
-      "type": "widen_type",
-      "compat": "USUALLY_COMPATIBLE",
-      "action": "Validate no precision loss. Re-run statistical checks."
+      "field": "entities_0_name",
+      "type": "remove_field",
+      "compat": "BREAKING",
+      "action": "Two-sprint deprecation minimum. Each registry subscriber must acknowledge before field is dropped."
     },
     {
-      "field": "source_path",
-      "type": "widen_type",
-      "compat": "USUALLY_COMPATIBLE",
-      "action": "Validate no precision loss. Re-run statistical checks."
-    },
-    {
-      "field": "source_hash",
-      "type": "widen_type",
-      "compat": "USUALLY_COMPATIBLE",
-      "action": "Validate no precision loss. Re-run statistical checks."
-    },
-    {
-      "field": "extracted_facts_0_source_excerpt",
-      "type": "widen_type",
-      "compat": "USUALLY_COMPATIBLE",
-      "action": "Validate no precision loss. Re-run statistical checks."
+      "field": "entities_0_type",
+      "type": "remove_field",
+      "compat": "BREAKING",
+      "action": "Two-sprint deprecation minimum. Each registry subscriber must acknowledge before field is dropped."
     },
     {
       "field": "extraction_model",
-      "type": "widen_type",
-      "compat": "USUALLY_COMPATIBLE",
-      "action": "Validate no precision loss. Re-run statistical checks."
-    },
-    {
-      "field": "extracted_facts_0_text",
-      "type": "widen_type",
-      "compat": "USUALLY_COMPATIBLE",
-      "action": "Validate no precision loss. Re-run statistical checks."
+      "type": "remove_enum_value",
+      "compat": "BREAKING",
+      "action": "Treat as breaking. Blast radius report mandatory."
     }
   ],
   "ai_system_status": {
