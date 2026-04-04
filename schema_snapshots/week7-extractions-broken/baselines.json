@@ -1,0 +1,30 @@
+{
+  "extracted_facts__count": {
+    "mean": 1534.038462,
+    "std": 4372.990743
+  },
+  "extracted_facts_0_confidence": {
+    "mean": 29.307692,
+    "std": 36.838316
+  },
+  "extracted_facts_0_page_ref": {
+    "mean": 1.230769,
+    "std": 0.58704
+  },
+  "entities__count": {
+    "mean": 0.0,
+    "std": 0.0
+  },
+  "processing_time_ms": {
+    "mean": 110304.615385,
+    "std": 129415.179735
+  },
+  "token_count_input": {
+    "mean": 0.0,
+    "std": 0.0
+  },
+  "token_count_output": {
+    "mean": 0.0,
+    "std": 0.0
+  }
+}

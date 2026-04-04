@@ -1,180 +1,129 @@
 {
-  "analysis_id": "850d6526-2702-4873-a226-f46ff60ea21e",
+  "analysis_id": "66598a3e-4a87-4c9a-81c9-32bdc6cd7445",
   "contract_id": "week7-extractions",
-  "analyzed_at": "2026-04-03T17:52:24.531258+00:00",
-  "old_snapshot": "20260403T160747",
-  "new_snapshot": "20260403T161308",
-  "total_changes": 12,
-  "breaking_changes": 0,
-  "safe_changes": 12,
+  "analyzed_at": "2026-04-04T08:12:42.684556+00:00",
+  "before_snapshot": "20260401T210247.yaml",
+  "after_snapshot": "20260404T060613.yaml",
+  "before_column_count": 19,
+  "after_column_count": 15,
+  "total_changes": 5,
+  "breaking_changes": 5,
+  "safe_changes": 0,
   "changes": [
     {
-      "field": "extracted_facts_0_text",
-      "change_type": "widen_type",
-      "compatibility": "USUALLY_COMPATIBLE",
-      "old_value": "\u2014",
-      "new_value": "\u2014",
-      "breaking": false,
-      "required_action": "Validate no precision loss. Re-run statistical checks.",
-      "registry_subscribers_affected": [],
-      "migration_checklist": [
-        "No action required \u2014 backward-compatible change."
-      ],
-      "rollback_plan": "N/A"
-    },
-    {
-      "field": "entities_0_name",
-      "change_type": "widen_type",
-      "compatibility": "USUALLY_COMPATIBLE",
-      "old_value": "\u2014",
-      "new_value": "\u2014",
-      "breaking": false,
-      "required_action": "Validate no precision loss. Re-run statistical checks.",
-      "registry_subscribers_affected": [],
-      "migration_checklist": [
-        "No action required \u2014 backward-compatible change."
-      ],
-      "rollback_plan": "N/A"
-    },
-    {
-      "field": "extracted_facts_0_source_excerpt",
-      "change_type": "widen_type",
-      "compatibility": "USUALLY_COMPATIBLE",
-      "old_value": "\u2014",
-      "new_value": "\u2014",
-      "breaking": false,
-      "required_action": "Validate no precision loss. Re-run statistical checks.",
-      "registry_subscribers_affected": [],
-      "migration_checklist": [
-        "No action required \u2014 backward-compatible change."
-      ],
-      "rollback_plan": "N/A"
-    },
-    {
-      "field": "extraction_model",
-      "change_type": "widen_type",
-      "compatibility": "USUALLY_COMPATIBLE",
-      "old_value": "\u2014",
-      "new_value": "\u2014",
-      "breaking": false,
-      "required_action": "Validate no precision loss. Re-run statistical checks.",
-      "registry_subscribers_affected": [],
-      "migration_checklist": [
-        "No action required \u2014 backward-compatible change."
-      ],
-      "rollback_plan": "N/A"
-    },
-    {
-      "field": "extracted_at",
-      "change_type": "widen_type",
-      "compatibility": "USUALLY_COMPATIBLE",
-      "old_value": "\u2014",
-      "new_value": "\u2014",
-      "breaking": false,
-      "required_action": "Validate no precision loss. Re-run statistical checks.",
-      "registry_subscribers_affected": [],
-      "migration_checklist": [
-        "No action required \u2014 backward-compatible change."
-      ],
-      "rollback_plan": "N/A"
-    },
-    {
-      "field": "source_hash",
-      "change_type": "widen_type",
-      "compatibility": "USUALLY_COMPATIBLE",
-      "old_value": "\u2014",
-      "new_value": "\u2014",
-      "breaking": false,
-      "required_action": "Validate no precision loss. Re-run statistical checks.",
-      "registry_subscribers_affected": [],
-      "migration_checklist": [
-        "No action required \u2014 backward-compatible change."
-      ],
-      "rollback_plan": "N/A"
-    },
-    {
-      "field": "extracted_facts_0_fact_id",
-      "change_type": "widen_type",
-      "compatibility": "USUALLY_COMPATIBLE",
-      "old_value": "\u2014",
-      "new_value": "\u2014",
-      "breaking": false,
-      "required_action": "Validate no precision loss. Re-run statistical checks.",
-      "registry_subscribers_affected": [],
-      "migration_checklist": [
-        "No action required \u2014 backward-compatible change."
-      ],
-      "rollback_plan": "N/A"
-    },
-    {
       "field": "entities_0_canonical_value",
-      "change_type": "widen_type",
-      "compatibility": "USUALLY_COMPATIBLE",
-      "old_value": "\u2014",
-      "new_value": "\u2014",
-      "breaking": false,
-      "required_action": "Validate no precision loss. Re-run statistical checks.",
+      "change_type": "remove_field",
+      "compatibility": "BREAKING",
+      "confluent_mode": "BACKWARD blocks",
+      "breaking": true,
+      "risk": "HIGH",
+      "before": "string, required",
+      "after": "absent",
+      "required_action": "Two-sprint deprecation minimum. Each registry subscriber must acknowledge before field is dropped.",
       "registry_subscribers_affected": [],
       "migration_checklist": [
-        "No action required \u2014 backward-compatible change."
+        "Notify all registry subscribers via blast radius report (field: entities_0_canonical_value)",
+        "Impact review: 'string, required' \u2192 'absent'",
+        "Mark field as DEPRECATED in contract \u2014 do not remove yet",
+        "Give all subscribers minimum 2 sprints to stop consuming this field",
+        "Collect written acknowledgement from each registered subscriber",
+        "Remove field only after 100% subscriber acknowledgement received"
       ],
-      "rollback_plan": "N/A"
-    },
-    {
-      "field": "source_path",
-      "change_type": "widen_type",
-      "compatibility": "USUALLY_COMPATIBLE",
-      "old_value": "\u2014",
-      "new_value": "\u2014",
-      "breaking": false,
-      "required_action": "Validate no precision loss. Re-run statistical checks.",
-      "registry_subscribers_affected": [],
-      "migration_checklist": [
-        "No action required \u2014 backward-compatible change."
-      ],
-      "rollback_plan": "N/A"
+      "rollback_plan": "Revert commit. Restore snapshot '20260401T210247.yaml' as active schema. Re-run ValidationRunner to confirm baseline restored."
     },
     {
       "field": "entities_0_entity_id",
-      "change_type": "widen_type",
-      "compatibility": "USUALLY_COMPATIBLE",
-      "old_value": "\u2014",
-      "new_value": "\u2014",
-      "breaking": false,
-      "required_action": "Validate no precision loss. Re-run statistical checks.",
+      "change_type": "remove_field",
+      "compatibility": "BREAKING",
+      "confluent_mode": "BACKWARD blocks",
+      "breaking": true,
+      "risk": "HIGH",
+      "before": "string, required",
+      "after": "absent",
+      "required_action": "Two-sprint deprecation minimum. Each registry subscriber must acknowledge before field is dropped.",
       "registry_subscribers_affected": [],
       "migration_checklist": [
-        "No action required \u2014 backward-compatible change."
+        "Notify all registry subscribers via blast radius report (field: entities_0_entity_id)",
+        "Impact review: 'string, required' \u2192 'absent'",
+        "Mark field as DEPRECATED in contract \u2014 do not remove yet",
+        "Give all subscribers minimum 2 sprints to stop consuming this field",
+        "Collect written acknowledgement from each registered subscriber",
+        "Remove field only after 100% subscriber acknowledgement received"
       ],
-      "rollback_plan": "N/A"
+      "rollback_plan": "Revert commit. Restore snapshot '20260401T210247.yaml' as active schema. Re-run ValidationRunner to confirm baseline restored."
     },
     {
-      "field": "doc_id",
-      "change_type": "widen_type",
-      "compatibility": "USUALLY_COMPATIBLE",
-      "old_value": "\u2014",
-      "new_value": "\u2014",
-      "breaking": false,
-      "required_action": "Validate no precision loss. Re-run statistical checks.",
+      "field": "entities_0_name",
+      "change_type": "remove_field",
+      "compatibility": "BREAKING",
+      "confluent_mode": "BACKWARD blocks",
+      "breaking": true,
+      "risk": "HIGH",
+      "before": "string, required",
+      "after": "absent",
+      "required_action": "Two-sprint deprecation minimum. Each registry subscriber must acknowledge before field is dropped.",
       "registry_subscribers_affected": [],
       "migration_checklist": [
-        "No action required \u2014 backward-compatible change."
+        "Notify all registry subscribers via blast radius report (field: entities_0_name)",
+        "Impact review: 'string, required' \u2192 'absent'",
+        "Mark field as DEPRECATED in contract \u2014 do not remove yet",
+        "Give all subscribers minimum 2 sprints to stop consuming this field",
+        "Collect written acknowledgement from each registered subscriber",
+        "Remove field only after 100% subscriber acknowledgement received"
       ],
-      "rollback_plan": "N/A"
+      "rollback_plan": "Revert commit. Restore snapshot '20260401T210247.yaml' as active schema. Re-run ValidationRunner to confirm baseline restored."
     },
     {
       "field": "entities_0_type",
-      "change_type": "widen_type",
-      "compatibility": "USUALLY_COMPATIBLE",
-      "old_value": "\u2014",
-      "new_value": "\u2014",
-      "breaking": false,
-      "required_action": "Validate no precision loss. Re-run statistical checks.",
+      "change_type": "remove_field",
+      "compatibility": "BREAKING",
+      "confluent_mode": "BACKWARD blocks",
+      "breaking": true,
+      "risk": "HIGH",
+      "before": "string, required, enum(6 values)",
+      "after": "absent",
+      "required_action": "Two-sprint deprecation minimum. Each registry subscriber must acknowledge before field is dropped.",
       "registry_subscribers_affected": [],
       "migration_checklist": [
-        "No action required \u2014 backward-compatible change."
+        "Notify all registry subscribers via blast radius report (field: entities_0_type)",
+        "Impact review: 'string, required, enum(6 values)' \u2192 'absent'",
+        "Mark field as DEPRECATED in contract \u2014 do not remove yet",
+        "Give all subscribers minimum 2 sprints to stop consuming this field",
+        "Collect written acknowledgement from each registered subscriber",
+        "Remove field only after 100% subscriber acknowledgement received"
       ],
-      "rollback_plan": "N/A"
+      "rollback_plan": "Revert commit. Restore snapshot '20260401T210247.yaml' as active schema. Re-run ValidationRunner to confirm baseline restored."
+    },
+    {
+      "field": "extraction_model",
+      "change_type": "remove_enum_value",
+      "compatibility": "BREAKING",
+      "confluent_mode": "BACKWARD blocks",
+      "breaking": true,
+      "risk": "HIGH",
+      "before": "string, required, enum(1 values)",
+      "after": "string, required, enum(4 values)",
+      "required_action": "Treat as breaking. Blast radius report mandatory.",
+      "registry_subscribers_affected": [],
+      "migration_checklist": [
+        "Notify all registry subscribers via blast radius report (field: extraction_model)",
+        "Impact review: 'string, required, enum(1 values)' \u2192 'string, required, enum(4 values)'",
+        "Re-run ValidationRunner to confirm all checks pass",
+        "Update contract documentation to reflect new schema"
+      ],
+      "rollback_plan": "Revert commit. Restore snapshot '20260401T210247.yaml' as active schema. Re-run ValidationRunner to confirm baseline restored."
     }
-  ]
+  ],
+  "migration_summary": {
+    "breaking_fields": [
+      "entities_0_canonical_value",
+      "entities_0_entity_id",
+      "entities_0_name",
+      "entities_0_type",
+      "extraction_model"
+    ],
+    "highest_risk": "HIGH",
+    "total_subscribers_at_risk": 0,
+    "immediate_action_required": true
+  }
 }

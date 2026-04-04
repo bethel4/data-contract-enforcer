@@ -1,0 +1,127 @@
+contract_id: week7-extractions
+captured_at: 20260404T050517
+schema:
+  doc_id:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 20.'
+    format: uuid
+    pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+  source_path:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 26.'
+  source_hash:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 20.'
+    format: sha256
+    pattern: ^[a-f0-9]{64}$
+  extracted_facts__count:
+    type: integer
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 23.'
+    minimum: 36.0
+    maximum: 22474.0
+    statistics:
+      mean: 1534.038462
+      std: 4372.990743
+      p25: 109.5
+      p75: 770.0
+  extracted_facts_0_fact_id:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 26.'
+    format: uuid
+    pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+  extracted_facts_0_text:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 21.'
+  extracted_facts_0_confidence:
+    type: number
+    required: true
+    description: "Auto-profiled. Null rate: 0.0%. Distinct values: 1. CRITICAL: must\
+      \ remain float 0.0\u20131.0. Do NOT convert to percentage scale (0\u2013100).\
+      \ A value of 0.87 means 87 percent confidence. Changing this scale is a BREAKING\
+      \ CHANGE that silently corrupts all downstream consumers."
+    minimum: 0.0
+    maximum: 1.0
+    statistics:
+      mean: 0.75
+      std: 0.0
+      p25: 0.75
+      p75: 0.75
+  extracted_facts_0_page_ref:
+    type: integer
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 3.'
+    minimum: 1.0
+    maximum: 3.0
+    statistics:
+      mean: 1.230769
+      std: 0.58704
+      p25: 1.0
+      p75: 1.0
+  extracted_facts_0_source_excerpt:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 21.'
+  entities__count:
+    type: integer
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 1.'
+    minimum: 0.0
+    maximum: 0.0
+    statistics:
+      mean: 0.0
+      std: 0.0
+      p25: 0.0
+      p75: 0.0
+  extraction_model:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    enum:
+    - document_refinery:fast_text
+    - document_refinery:hybrid
+    - document_refinery:layout
+    - document_refinery:vision
+  processing_time_ms:
+    type: integer
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 26.'
+    minimum: 250.0
+    maximum: 445430.0
+    statistics:
+      mean: 110304.615385
+      std: 129415.179735
+      p25: 1280.0
+      p75: 195662.5
+  token_count_input:
+    type: integer
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 1.'
+    minimum: 0.0
+    maximum: 0.0
+    statistics:
+      mean: 0.0
+      std: 0.0
+      p25: 0.0
+      p75: 0.0
+  token_count_output:
+    type: integer
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 1.'
+    minimum: 0.0
+    maximum: 0.0
+    statistics:
+      mean: 0.0
+      std: 0.0
+      p25: 0.0
+      p75: 0.0
+  extracted_at:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 26.'
+    format: date-time
