@@ -101,6 +101,8 @@ def get_embed(text: str) -> np.ndarray:
 
 
 def cosine_distance(a: np.ndarray, b: np.ndarray) -> float:
+    if a.shape != b.shape:
+        raise ValueError(f"cosine_distance shape mismatch: {a.shape} vs {b.shape}")
     sim = float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b) + 1e-9))
     return round(1.0 - sim, 6)
 
@@ -121,36 +123,115 @@ def check_embedding_drift(
     if not sample:
         return {"status": "ERROR", "message": "No text values found", "drift_score": None}
 
-    embed_fn = get_embed if (OPENROUTER_AVAILABLE and __import__('os').environ.get('OPENROUTER_API_KEY','')) else simple_embed
+    import os
+    use_openrouter = bool(OPENROUTER_AVAILABLE and os.environ.get("OPENROUTER_API_KEY", ""))
+    embedder_requested = "openrouter" if use_openrouter else "simple"
+    embed_fn = get_embed if use_openrouter else simple_embed
     embeddings       = np.array([embed_fn(t) for t in sample])
     current_centroid = embeddings.mean(axis=0)
+    # If the OpenRouter call fails, real_embed() falls back to simple_embed().
+    # Use the actual embedding dimension to decide what we ended up using.
+    embedder = "simple" if int(current_centroid.shape[0]) == 128 else embedder_requested
 
     bp = Path(baseline_path)
     bp.parent.mkdir(parents=True, exist_ok=True)
 
     if not bp.exists():
-        np.savez(str(bp), centroid=current_centroid)
+        np.savez(
+            str(bp),
+            centroid=current_centroid,
+            dim=int(current_centroid.shape[0]),
+            embedder=embedder,
+            created_at=now(),
+        )
         print(f"  Embedding baseline created: {len(sample)} texts sampled → {baseline_path}")
         return {
             "status":      "BASELINE_SET",
             "drift_score": 0.0,
             "threshold":   threshold,
             "sample_size": len(sample),
+            "embedder":    embedder,
+            "embedder_requested": embedder_requested,
+            "dim":         int(current_centroid.shape[0]),
             "note":        "Baseline set. Run again to detect drift.",
         }
 
-    baseline_centroid = np.load(str(bp))["centroid"]
-    if baseline_centroid.shape != current_centroid.shape:
-        print(f"  Embedding dimension mismatch: baseline {baseline_centroid.shape[0]} vs current {current_centroid.shape[0]}. Recreating baseline.")
-        np.savez(str(bp), centroid=current_centroid)
+    try:
+        baseline = np.load(str(bp))
+        baseline_centroid = baseline["centroid"]
+        baseline_dim = int(baseline["dim"]) if "dim" in baseline.files else int(baseline_centroid.shape[0])
+        baseline_embedder = (
+            str(baseline["embedder"]) if "embedder" in baseline.files else "unknown"
+        )
+    except Exception as e:
+        print(f"  Failed to read embedding baseline ({baseline_path}): {e}. Recreating baseline.")
+        np.savez(
+            str(bp),
+            centroid=current_centroid,
+            dim=int(current_centroid.shape[0]),
+            embedder=embedder,
+            created_at=now(),
+        )
         return {
             "status":      "BASELINE_RESET",
             "drift_score": 0.0,
             "threshold":   threshold,
             "sample_size": len(sample),
-            "note":        "Baseline reset due to dimension change. Run again to detect drift.",
+            "embedder":    embedder,
+            "embedder_requested": embedder_requested,
+            "dim":         int(current_centroid.shape[0]),
+            "note":        "Baseline reset due to unreadable baseline file. Run again to detect drift.",
         }
-    drift = cosine_distance(current_centroid, baseline_centroid)
+
+    if baseline_centroid.shape != current_centroid.shape:
+        print(
+            "  Embedding baseline mismatch "
+            f"(baseline dim={baseline_dim}, embedder={baseline_embedder}) vs "
+            f"(current dim={int(current_centroid.shape[0])}, embedder={embedder}). Recreating baseline."
+        )
+        np.savez(
+            str(bp),
+            centroid=current_centroid,
+            dim=int(current_centroid.shape[0]),
+            embedder=embedder,
+            created_at=now(),
+        )
+        return {
+            "status":      "BASELINE_RESET",
+            "drift_score": 0.0,
+            "threshold":   threshold,
+            "sample_size": len(sample),
+            "embedder":    embedder,
+            "embedder_requested": embedder_requested,
+            "dim":         int(current_centroid.shape[0]),
+            "baseline_dim": baseline_dim,
+            "baseline_embedder": baseline_embedder,
+            "note":        "Baseline reset due to embedding mismatch. Run again to detect drift.",
+        }
+
+    try:
+        drift = cosine_distance(current_centroid, baseline_centroid)
+    except Exception as e:
+        print(f"  Failed drift calculation: {e}. Recreating baseline.")
+        np.savez(
+            str(bp),
+            centroid=current_centroid,
+            dim=int(current_centroid.shape[0]),
+            embedder=embedder,
+            created_at=now(),
+        )
+        return {
+            "status":      "BASELINE_RESET",
+            "drift_score": 0.0,
+            "threshold":   threshold,
+            "sample_size": len(sample),
+            "embedder":    embedder,
+            "embedder_requested": embedder_requested,
+            "dim":         int(current_centroid.shape[0]),
+            "baseline_dim": baseline_dim,
+            "baseline_embedder": baseline_embedder,
+            "note":        "Baseline reset due to drift calculation error. Run again to detect drift.",
+        }
     status = "FAIL" if drift > threshold else ("WARN" if drift > threshold * 0.6 else "PASS")
     print(f"  Embedding drift: {drift:.4f} (threshold={threshold}) → {status}")
     return {
@@ -158,6 +239,9 @@ def check_embedding_drift(
         "drift_score": drift,
         "threshold":   threshold,
         "sample_size": len(sample),
+        "embedder":    embedder,
+        "embedder_requested": embedder_requested,
+        "dim":         int(current_centroid.shape[0]),
     }
 
 
