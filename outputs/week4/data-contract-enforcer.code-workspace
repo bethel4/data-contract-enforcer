@@ -1,0 +1,29 @@
+{
+	"folders": [
+		{
+			"name": "data-contract-enforcer",
+			"path": "../.."
+		},
+		{
+			"name": "week4",
+			"path": "../../../codebase-cartography/outputs/week4"
+		},
+		{
+			"name": "outputs",
+			"path": "../../../ledger-system/outputs"
+		},
+		{
+			"name": "week2",
+			"path": "../../../automaton-auditor/outputs/week2"
+		},
+		{
+			"name": "week1",
+			"path": "../../../Roo-Code/outputs/week1"
+		},
+		{
+			"name": "week3",
+			"path": "../../../document-refinery/outputs/week3"
+		}
+	],
+	"settings": {}
+}

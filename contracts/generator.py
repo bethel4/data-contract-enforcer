@@ -5,17 +5,31 @@ queries Week 4 lineage graph for downstream consumers, and writes:
   - Bitol-compatible YAML contract file
   - dbt schema.yml counterpart
   - Timestamped schema snapshot
+
+OpenRouter integration: uses LLM to annotate ambiguous columns with
+plain-English descriptions and business rules.
+Set OPENROUTER_API_KEY in your .env file to enable LLM annotation.
 """
 
 import argparse
 import hashlib
 import json
+import sys
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
 import pandas as pd
 import yaml
+
+# Add parent dir so we can import openrouter_client
+sys.path.insert(0, str(Path(__file__).parent.parent))
+try:
+    from openrouter_client import annotate_column, load_env
+    load_env()
+    LLM_AVAILABLE = True
+except Exception:
+    LLM_AVAILABLE = False
 
 
 # ── helpers ───────────────────────────────────────────────────────────────────
@@ -168,6 +182,22 @@ def build_contract(
 
     downstream = load_lineage_downstream(lineage_path, source_path)
 
+    # Step 4: LLM annotation via OpenRouter
+    import os
+    llm_annotations: dict = {}
+    use_llm = LLM_AVAILABLE and bool(os.environ.get("OPENROUTER_API_KEY",""))
+    if use_llm:
+        print("  LLM annotation enabled (OpenRouter)")
+        ambiguous = [c for c in df.columns if len(c)<=5 or
+                     any(k in c.lower() for k in ["score","flag","type","code","ref"])]
+        for col in ambiguous[:3]:
+            samples = df[col].dropna().astype(str).head(5).tolist()
+            ann = annotate_column(col, name, samples, infer_type(df[col]))
+            llm_annotations[col] = ann
+            print(f"    Annotated: {col}")
+    else:
+        print("  LLM annotation: set OPENROUTER_API_KEY in .env to enable")
+
     # Build quality checks
     quality_checks = [f"row_count >= {max(1, len(rows) // 2)}"]
     if any("doc_id" in c for c in df.columns):
@@ -306,4 +336,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main()  
