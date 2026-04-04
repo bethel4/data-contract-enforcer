@@ -8,19 +8,26 @@ This repository profiles extraction and event data to produce machine-checkable 
 
 ## Quick start
 
-1. Install dependencies:
+1. Ensure you have Python 3.11+ (see `requires-python` in `pyproject.toml`).
+
+2. Install dependencies (recommended: `uv`):
 
    ```bash
-   pip install -r requirements.txt
+   python3 -m venv .uv-tool
+   ./.uv-tool/bin/python -m pip install --no-cache-dir -U pip uv
+
+   # If you can't write to ~/.cache (common in containers), keep uv's cache in-repo:
+   mkdir -p .uv-cache
+   UV_CACHE_DIR="$PWD/.uv-cache" ./.uv-tool/bin/uv sync
    ```
 
-2. Generate contracts from a JSONL source file:
+3. Generate contracts from a JSONL source file:
 
    ```bash
-   python contracts/generator.py --source outputs/week3/extractions.jsonl --output generated_contracts
+   ./.venv/bin/python contracts/generator.py --source outputs/week3/extractions.jsonl --output generated_contracts
    ```
 
-3. Review generated artifacts in `generated_contracts/`.
+4. Review generated artifacts in `generated_contracts/`.
 
 ## Repository structure
 
