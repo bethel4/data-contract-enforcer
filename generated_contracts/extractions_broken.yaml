@@ -1,0 +1,162 @@
+kind: DataContract
+apiVersion: v3.0.0
+id: week7-extractions-broken
+info:
+  title: extractions_broken — Data Contract
+  version: 1.0.0
+  owner: week7-data-contract-enforcer
+  description: Auto-generated contract for extractions_broken. Profiled from 26 records.
+    Generated 2026-04-04T14:49:16.275249+00:00.
+servers:
+  local:
+    type: local
+    path: outputs/week3/extractions_broken.jsonl
+    format: jsonl
+terms:
+  usage: Internal inter-system data contract. Do not publish externally.
+  limitations: The confidence field must remain float 0.0–1.0. Schema changes require
+    blast-radius analysis before deployment.
+schema:
+  doc_id:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 20.'
+    format: uuid
+    pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+  source_path:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 26.'
+  source_hash:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 20.'
+    format: sha256
+    pattern: ^[a-f0-9]{64}$
+  extracted_facts__count:
+    type: integer
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 23.'
+    minimum: 36.0
+    maximum: 22474.0
+    statistics:
+      mean: 1534.038462
+      std: 4372.990743
+      p25: 109.5
+      p75: 770.0
+  extracted_facts_0_fact_id:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 26.'
+    format: uuid
+    pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+  extracted_facts_0_text:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 21.'
+  extracted_facts_0_confidence:
+    type: number
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 2. CRITICAL: must
+      remain float 0.0–1.0. Do NOT convert to percentage scale (0–100). A value of
+      0.87 means 87 percent confidence. Changing this scale is a BREAKING CHANGE that
+      silently corrupts all downstream consumers.'
+    minimum: 0.0
+    maximum: 1.0
+    statistics:
+      mean: 29.307692
+      std: 36.838316
+      p25: 0.75
+      p75: 75.0
+  extracted_facts_0_page_ref:
+    type: integer
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 3.'
+    minimum: 1.0
+    maximum: 3.0
+    statistics:
+      mean: 1.230769
+      std: 0.58704
+      p25: 1.0
+      p75: 1.0
+  extracted_facts_0_source_excerpt:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 21.'
+  entities__count:
+    type: integer
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 1. WARNING: Suspicious
+      distribution detected (mean near boundary). Verify data quality and intended
+      scale.'
+    minimum: 0.0
+    maximum: 0.0
+    statistics:
+      mean: 0.0
+      std: 0.0
+      p25: 0.0
+      p75: 0.0
+  extraction_model:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    enum:
+    - document_refinery:fast_text
+    - document_refinery:hybrid
+    - document_refinery:layout
+    - document_refinery:vision
+  processing_time_ms:
+    type: integer
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 26.'
+    minimum: 250.0
+    maximum: 445430.0
+    statistics:
+      mean: 110304.615385
+      std: 129415.179735
+      p25: 1280.0
+      p75: 195662.5
+  token_count_input:
+    type: integer
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 1. WARNING: Suspicious
+      distribution detected (mean near boundary). Verify data quality and intended
+      scale.'
+    minimum: 0.0
+    maximum: 0.0
+    statistics:
+      mean: 0.0
+      std: 0.0
+      p25: 0.0
+      p75: 0.0
+  token_count_output:
+    type: integer
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 1. WARNING: Suspicious
+      distribution detected (mean near boundary). Verify data quality and intended
+      scale.'
+    minimum: 0.0
+    maximum: 0.0
+    statistics:
+      mean: 0.0
+      std: 0.0
+      p25: 0.0
+      p75: 0.0
+  extracted_at:
+    type: string
+    required: true
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 26.'
+    format: date-time
+quality:
+  type: SodaChecks
+  specification:
+    checks for extractions_broken:
+    - row_count >= 13
+    - missing_count(doc_id) = 0
+    - duplicate_count(doc_id) = 0
+    - min(confidence) >= 0.0
+    - max(confidence) <= 1.0
+    - avg(confidence) between 0.05 and 0.99
+lineage:
+  upstream: []
+  downstream: []
