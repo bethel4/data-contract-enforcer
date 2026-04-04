@@ -1,0 +1,88 @@
+version: 2
+models:
+- name: extractions
+  description: dbt-compatible contract for extractions
+  columns:
+  - name: doc_id
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 20.'
+    tests:
+    - not_null
+    - unique
+  - name: source_path
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 26.'
+    tests:
+    - not_null
+  - name: source_hash
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 20.'
+    tests:
+    - not_null
+  - name: extracted_facts__count
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 23. WARNING: Suspicious
+      distribution detected (mean near boundary). Verify data quality and intended
+      scale.'
+    tests:
+    - not_null
+  - name: extracted_facts_0_fact_id
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 26.'
+    tests:
+    - not_null
+    - unique
+  - name: extracted_facts_0_text
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 21.'
+    tests:
+    - not_null
+  - name: extracted_facts_0_confidence
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 1. CRITICAL: must
+      remain float 0.0–1.0. Do NOT convert to percentage scale (0–100). A value of
+      0.87 means 87 percent confidence. Changing this scale is a BREAKING CHANGE that
+      silently corrupts all downstream consumers.'
+    tests:
+    - not_null
+  - name: extracted_facts_0_page_ref
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 3. WARNING: Suspicious
+      distribution detected (mean near boundary). Verify data quality and intended
+      scale.'
+    tests:
+    - not_null
+  - name: extracted_facts_0_source_excerpt
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 21.'
+    tests:
+    - not_null
+  - name: entities__count
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 1. WARNING: Suspicious
+      distribution detected (mean near boundary). Verify data quality and intended
+      scale.'
+    tests:
+    - not_null
+  - name: extraction_model
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 4.'
+    tests:
+    - not_null
+    - accepted_values:
+        values:
+        - document_refinery:fast_text
+        - document_refinery:hybrid
+        - document_refinery:layout
+        - document_refinery:vision
+  - name: processing_time_ms
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 26. WARNING: Suspicious
+      distribution detected (mean near boundary). Verify data quality and intended
+      scale.'
+    tests:
+    - not_null
+  - name: token_count_input
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 1. WARNING: Suspicious
+      distribution detected (mean near boundary). Verify data quality and intended
+      scale.'
+    tests:
+    - not_null
+  - name: token_count_output
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 1. WARNING: Suspicious
+      distribution detected (mean near boundary). Verify data quality and intended
+      scale.'
+    tests:
+    - not_null
+  - name: extracted_at
+    description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 26.'
+    tests:
+    - not_null

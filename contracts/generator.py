@@ -125,6 +125,15 @@ def build_clause(col: str, series: pd.Series) -> dict:
                 "Changing this scale is a BREAKING CHANGE that silently corrupts all downstream consumers."
             )
 
+        # Flag suspicious distributions for proportion-like columns (0-1 range)
+        if mn >= 0.0 and mx <= 1.0:
+            mean = clause["statistics"]["mean"]
+            if mean > 0.99 or mean < 0.01:
+                clause["description"] += (
+                    " WARNING: Suspicious distribution detected (mean near boundary). "
+                    "Verify data quality and intended scale."
+                )
+
     # Enum detection (low-cardinality strings)
     if "float" not in dtype and "int" not in dtype and series.nunique() <= 10:
         vals = sorted(series.dropna().unique().tolist())
@@ -179,6 +188,22 @@ def build_contract(
     schema: dict = {}
     for col in df.columns:
         schema[col] = build_clause(col, df[col])
+
+    # Collect and write statistical baselines
+    baselines = {}
+    for col, clause in schema.items():
+        if "statistics" in clause:
+            baselines[col] = {
+                "mean": clause["statistics"]["mean"],
+                "std": clause["statistics"]["std"],
+            }
+    if baselines:
+        snap_dir = Path("schema_snapshots") / f"week7-{cid}"
+        snap_dir.mkdir(parents=True, exist_ok=True)
+        baseline_path = snap_dir / "baselines.json"
+        with open(baseline_path, "w") as f:
+            json.dump(baselines, f, indent=2)
+        print(f"Baselines → {baseline_path} ({len(baselines)} numeric columns)")
 
     downstream = load_lineage_downstream(lineage_path, source_path)
 

@@ -1,22 +1,110 @@
 {
-  "generated_at": "2026-04-01T19:08:57.586542+00:00",
-  "data_health_score": 100.0,
-  "health_narrative": "System data health is EXCELLENT \u2014 all contracts passing.",
+  "report_id": "693e8fcc-1ff1-4bc2-9592-6a389d67bbce",
+  "generated_at": "2026-04-04T07:47:59.019059+00:00",
+  "generator": "contracts/report_generator.py",
+  "auto_generated": true,
+  "data_health_score": 0.0,
+  "health_narrative": "System data health is CRITICAL \u2014 immediate action required.",
   "summary": {
-    "total_checks": 48,
-    "passed": 48,
-    "failed": 0,
-    "violations": 0
+    "total_checks": 33,
+    "passed": 32,
+    "failed": 1,
+    "warned": 0,
+    "violations": 6
   },
-  "top_violations": [],
+  "top_violations": [
+    {
+      "check_id": "week7-extractions.extracted_facts_0_confidence.max",
+      "severity": "CRITICAL",
+      "message": "Maximum 98.0 exceeds 1.0",
+      "author": "50007097+bethel4@users.noreply.github.com",
+      "commit": "7e9ba4147cb9",
+      "blast_nodes": 2,
+      "registry_subscribers": 0,
+      "records_affected": 10
+    },
+    {
+      "check_id": "week7-extractions.extracted_facts_0_confidence.max",
+      "severity": "CRITICAL",
+      "message": "Maximum 75.0 exceeds 1.0",
+      "author": "developer@example.com",
+      "commit": "c4fbd6639e48",
+      "blast_nodes": 9,
+      "registry_subscribers": 0,
+      "records_affected": 10
+    },
+    {
+      "check_id": "week7-extractions.extracted_facts_0_confidence.max",
+      "severity": "CRITICAL",
+      "message": "Maximum 75.0 exceeds 1.0",
+      "author": "developer@example.com",
+      "commit": "c4fbd6639e48",
+      "blast_nodes": 9,
+      "registry_subscribers": 0,
+      "records_affected": 10
+    }
+  ],
+  "schema_changes": [
+    {
+      "field": "extracted_facts_0_fact_id",
+      "type": "widen_type",
+      "compat": "USUALLY_COMPATIBLE",
+      "action": "Validate no precision loss. Re-run statistical checks."
+    },
+    {
+      "field": "doc_id",
+      "type": "widen_type",
+      "compat": "USUALLY_COMPATIBLE",
+      "action": "Validate no precision loss. Re-run statistical checks."
+    },
+    {
+      "field": "extracted_at",
+      "type": "widen_type",
+      "compat": "USUALLY_COMPATIBLE",
+      "action": "Validate no precision loss. Re-run statistical checks."
+    },
+    {
+      "field": "source_path",
+      "type": "widen_type",
+      "compat": "USUALLY_COMPATIBLE",
+      "action": "Validate no precision loss. Re-run statistical checks."
+    },
+    {
+      "field": "source_hash",
+      "type": "widen_type",
+      "compat": "USUALLY_COMPATIBLE",
+      "action": "Validate no precision loss. Re-run statistical checks."
+    },
+    {
+      "field": "extracted_facts_0_source_excerpt",
+      "type": "widen_type",
+      "compat": "USUALLY_COMPATIBLE",
+      "action": "Validate no precision loss. Re-run statistical checks."
+    },
+    {
+      "field": "extraction_model",
+      "type": "widen_type",
+      "compat": "USUALLY_COMPATIBLE",
+      "action": "Validate no precision loss. Re-run statistical checks."
+    },
+    {
+      "field": "extracted_facts_0_text",
+      "type": "widen_type",
+      "compat": "USUALLY_COMPATIBLE",
+      "action": "Validate no precision loss. Re-run statistical checks."
+    }
+  ],
   "ai_system_status": {
-    "embedding_drift": "N/A",
-    "embedding_status": "N/A",
-    "llm_violation_rate": "N/A",
-    "llm_trend": "N/A",
-    "overall_ai_status": "UNKNOWN"
+    "embedding_drift": 0.0,
+    "embedding_status": "PASS",
+    "llm_violation_rate": 0.0,
+    "llm_trend": "unknown",
+    "prompt_invalid_count": 0,
+    "overall_ai_status": "PASS"
   },
   "recommended_actions": [
-    "No critical actions required. Continue monitoring."
+    "Update outputs/week3/extractions.jsonl producer to output confidence as float 0.0\u20131.0. Re-run generator.py to refresh statistical baseline. Contract: week7-extractions clause extracted_facts_0_confidence.max.",
+    "Update outputs/week3/extractions.jsonl producer to output confidence as float 0.0\u20131.0. Re-run generator.py to refresh statistical baseline. Contract: week7-extractions clause extracted_facts_0_confidence.max.",
+    "Update outputs/week3/extractions.jsonl producer to output confidence as float 0.0\u20131.0. Re-run generator.py to refresh statistical baseline. Contract: week7-extractions clause extracted_facts_0_confidence.max."
   ]
 }

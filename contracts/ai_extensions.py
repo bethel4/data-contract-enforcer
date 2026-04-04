@@ -140,6 +140,16 @@ def check_embedding_drift(
         }
 
     baseline_centroid = np.load(str(bp))["centroid"]
+    if baseline_centroid.shape != current_centroid.shape:
+        print(f"  Embedding dimension mismatch: baseline {baseline_centroid.shape} vs current {current_centroid.shape}. Recreating baseline.")
+        np.savez(str(bp), centroid=current_centroid)
+        return {
+            "status":      "BASELINE_RESET",
+            "drift_score": 0.0,
+            "threshold":   threshold,
+            "sample_size": len(sample),
+            "note":        "Baseline reset due to dimension mismatch. Run again to detect drift.",
+        }
     drift = cosine_distance(current_centroid, baseline_centroid)
     status = "FAIL" if drift > threshold else ("WARN" if drift > threshold * 0.6 else "PASS")
     print(f"  Embedding drift: {drift:.4f} (threshold={threshold}) → {status}")
