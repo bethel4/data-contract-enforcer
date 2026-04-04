@@ -73,7 +73,7 @@ def sha_file(path: str) -> str:
 
 # ── check execution ───────────────────────────────────────────────────────────
 
-def run_clause(col: str, clause: dict, df: pd.DataFrame, prefix: str) -> list[dict]:
+def run_clause(col: str, clause: dict, df: pd.DataFrame, prefix: str, baselines: dict) -> list[dict]:
     results = []
 
     actual_col = find_col(col, df)
@@ -103,7 +103,7 @@ def run_clause(col: str, clause: dict, df: pd.DataFrame, prefix: str) -> list[di
             "status":         "FAIL" if n > 0 else "PASS",
             "actual_value":   f"null_count={n}",
             "expected":       "null_count=0",
-            "severity":       "CRITICAL" if n > 0 else "INFO",
+            "severity":       "CRITICAL" if n > 0 else "LOW",
             "records_failing": n,
             "sample_failing": [],
             "message":        f"{n} null values found" if n > 0 else "OK",
@@ -124,7 +124,7 @@ def run_clause(col: str, clause: dict, df: pd.DataFrame, prefix: str) -> list[di
             "status":         "FAIL" if mn < exp else "PASS",
             "actual_value":   f"min={round(mn, 4)}",
             "expected":       f"min>={exp}",
-            "severity":       "CRITICAL" if mn < exp else "INFO",
+            "severity":       "CRITICAL" if mn < exp else "LOW",
             "records_failing": fail,
             "sample_failing": [],
             "message":        f"Minimum {round(mn,4)} is below {exp}" if fail else "OK",
@@ -141,32 +141,33 @@ def run_clause(col: str, clause: dict, df: pd.DataFrame, prefix: str) -> list[di
             "status":         "FAIL" if mx > exp else "PASS",
             "actual_value":   f"max={round(mx, 4)}",
             "expected":       f"max<={exp}",
-            "severity":       "CRITICAL" if mx > exp else "INFO",
+            "severity":       "CRITICAL" if mx > exp else "LOW",
             "records_failing": fail,
             "sample_failing": [],
             "message":        f"Maximum {round(mx,4)} exceeds {exp}" if fail else "OK",
         })
 
     # ── statistical drift ─────────────────────────────────────────────────────
-    if numeric and "statistics" in clause:
-        baseline_mean = clause["statistics"].get("mean", series.mean())
-        baseline_std  = clause["statistics"].get("std",  series.std())
+    if numeric:
+        baseline = baselines.get(col, {})
+        baseline_mean = baseline.get("mean", clause.get("statistics", {}).get("mean", series.mean()))
+        baseline_std  = baseline.get("std",  clause.get("statistics", {}).get("std",  series.std()))
         current_mean  = float(series.dropna().mean()) if len(series.dropna()) else 0.0
         if baseline_std and baseline_std > 0:
             z = abs(current_mean - baseline_mean) / baseline_std
-            status = "FAIL" if z > 3 else ("WARN" if z > 2 else "PASS")
-            sev    = "HIGH" if z > 3 else ("MEDIUM" if z > 2 else "INFO")
+            status = "FAIL" if z >= 3 else ("WARNING" if z >= 2 else "PASS")
+            sev    = "HIGH" if z >= 3 else ("WARNING" if z >= 2 else "LOW")
             results.append({
                 "check_id":       f"{prefix}.{col}.drift",
                 "column_name":    col,
                 "check_type":     "statistical_drift",
                 "status":         status,
                 "actual_value":   f"mean={round(current_mean,4)}, z_score={round(z,2)}",
-                "expected":       f"z_score<2 (baseline_mean={baseline_mean})",
+                "expected":       f"z_score<2 (baseline_mean={round(baseline_mean,4)})",
                 "severity":       sev,
                 "records_failing": 0,
                 "sample_failing": [],
-                "message":        f"Statistical drift detected: z={round(z,2)}" if z > 2 else "OK",
+                "message":        f"Statistical drift detected: z={round(z,2)}" if z >= 2 else "OK",
             })
 
     # ── enum check ────────────────────────────────────────────────────────────
@@ -180,7 +181,7 @@ def run_clause(col: str, clause: dict, df: pd.DataFrame, prefix: str) -> list[di
             "status":         "FAIL" if bad > 0 else "PASS",
             "actual_value":   f"invalid_count={bad}",
             "expected":       f"values in {list(clause['enum'])[:5]}",
-            "severity":       "CRITICAL" if bad > 0 else "INFO",
+            "severity":       "CRITICAL" if bad > 0 else "LOW",
             "records_failing": bad,
             "sample_failing": [],
             "message":        f"{bad} values outside allowed enum" if bad else "OK",
@@ -196,7 +197,7 @@ def run_clause(col: str, clause: dict, df: pd.DataFrame, prefix: str) -> list[di
             "status":         "FAIL" if dups > 0 else "PASS",
             "actual_value":   f"duplicates={dups}",
             "expected":       "duplicates=0",
-            "severity":       "CRITICAL" if dups > 0 else "INFO",
+            "severity":       "CRITICAL" if dups > 0 else "LOW",
             "records_failing": dups,
             "sample_failing": [],
             "message":        f"{dups} duplicate values found" if dups else "OK",
@@ -213,16 +214,26 @@ def run_validation(contract_path: str, data_path: str, output_path: str) -> dict
     df       = flatten(rows)
     cid      = contract.get("id", "unknown")
 
+    # Load baselines
+    snap_dir = Path("schema_snapshots") / cid
+    baseline_path = snap_dir / "baselines.json"
+    baselines = {}
+    if baseline_path.exists():
+        try:
+            baselines = json.load(open(baseline_path))
+        except Exception:
+            pass
+
     all_results: list[dict] = []
     schema = contract.get("schema", {})
 
     for col, clause in schema.items():
         if isinstance(clause, dict):
-            all_results.extend(run_clause(col, clause, df, cid))
+            all_results.extend(run_clause(col, clause, df, cid, baselines))
 
     passed  = sum(1 for r in all_results if r["status"] == "PASS")
     failed  = sum(1 for r in all_results if r["status"] == "FAIL")
-    warned  = sum(1 for r in all_results if r["status"] == "WARN")
+    warned  = sum(1 for r in all_results if r["status"] == "WARNING")
     errored = sum(1 for r in all_results if r["status"] == "ERROR")
 
     report = {
@@ -243,7 +254,7 @@ def run_validation(contract_path: str, data_path: str, output_path: str) -> dict
         json.dump(report, f, indent=2)
 
     # Write any FAILs to violation_log
-    fails = [r for r in all_results if r["status"] in ("FAIL", "WARN")]
+    fails = [r for r in all_results if r["status"] in ("FAIL", "WARNING")]
     if fails:
         Path("violation_log").mkdir(exist_ok=True)
         with open("violation_log/violations.jsonl", "a") as f:
@@ -275,9 +286,24 @@ def main():
     ap.add_argument("--data",     required=True, help="Path to data JSONL file")
     ap.add_argument("--output",   default="validation_reports/report.json",
                     help="Path for output JSON report")
+    ap.add_argument("--mode",     choices=["AUDIT", "WARN", "ENFORCE"], default="AUDIT",
+                    help="Enforcement mode: AUDIT (log only), WARN (block on CRITICAL), ENFORCE (block on CRITICAL/HIGH)")
     args = ap.parse_args()
 
-    run_validation(args.contract, args.data, args.output)
+    report = run_validation(args.contract, args.data, args.output)
+    
+    # Enforcement logic
+    if args.mode == "WARN":
+        criticals = [r for r in report["results"] if r["severity"] == "CRITICAL"]
+        if criticals:
+            print(f"Mode {args.mode}: Blocking on {len(criticals)} CRITICAL violations")
+            exit(1)
+    elif args.mode == "ENFORCE":
+        high_crits = [r for r in report["results"] if r["severity"] in ("CRITICAL", "HIGH")]
+        if high_crits:
+            print(f"Mode {args.mode}: Blocking on {len(high_crits)} CRITICAL/HIGH violations")
+            exit(1)
+    # AUDIT: always pass
 
 
 if __name__ == "__main__":

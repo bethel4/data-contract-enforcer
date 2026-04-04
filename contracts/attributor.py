@@ -171,7 +171,7 @@ def git_blame_candidates(upstream_nodes: list, repo_root: str = ".") -> list:
                     days_old = 1
 
                 hop_count = 0
-                confidence = max(0.05, 1.0 - (days_old * 0.05) - (hop_count * 0.2))
+                confidence = max(0.05, 1.0 - (days_old * 0.1) - (hop_count * 0.2))
 
                 candidates.append({
                     "file_path":        file_path,

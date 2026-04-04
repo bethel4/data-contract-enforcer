@@ -1,9 +1,9 @@
 {
-  "analysis_id": "66598a3e-4a87-4c9a-81c9-32bdc6cd7445",
+  "analysis_id": "d664edd8-9b7c-4a9c-ab2f-c231279785ce",
   "contract_id": "week7-extractions",
-  "analyzed_at": "2026-04-04T08:12:42.684556+00:00",
+  "analyzed_at": "2026-04-04T17:53:12.915914+00:00",
   "before_snapshot": "20260401T210247.yaml",
-  "after_snapshot": "20260404T060613.yaml",
+  "after_snapshot": "20260404T144744.yaml",
   "before_column_count": 19,
   "after_column_count": 15,
   "total_changes": 5,
