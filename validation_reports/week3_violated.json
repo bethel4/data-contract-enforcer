@@ -1,11 +1,11 @@
 {
-  "report_id": "fb924db6-74eb-4dad-b6e3-9be60e0dbca7",
+  "report_id": "857a516c-02aa-4a5c-b1f5-d2e5b00a4f25",
   "contract_id": "week7-extractions",
-  "snapshot_id": "f7a3c7d720fe8729",
-  "run_timestamp": "2026-04-03T16:34:58.692698+00:00",
+  "snapshot_id": "e5ff8b4ff702e858",
+  "run_timestamp": "2026-04-03T16:38:35.018225+00:00",
   "total_checks": 41,
-  "passed": 41,
-  "failed": 0,
+  "passed": 39,
+  "failed": 2,
   "warned": 0,
   "errored": 0,
   "results": [
@@ -133,25 +133,25 @@
       "check_id": "week7-extractions.extracted_facts_0_confidence.max",
       "column_name": "extracted_facts_0_confidence",
       "check_type": "range",
-      "status": "PASS",
-      "actual_value": "max=0.99",
+      "status": "FAIL",
+      "actual_value": "max=98.0",
       "expected": "max<=1.0",
-      "severity": "INFO",
-      "records_failing": 0,
+      "severity": "CRITICAL",
+      "records_failing": 10,
       "sample_failing": [],
-      "message": "OK"
+      "message": "Maximum 98.0 exceeds 1.0"
     },
     {
       "check_id": "week7-extractions.extracted_facts_0_confidence.drift",
       "column_name": "extracted_facts_0_confidence",
       "check_type": "statistical_drift",
-      "status": "PASS",
-      "actual_value": "mean=0.7882, z_score=0.0",
+      "status": "FAIL",
+      "actual_value": "mean=14.2027, z_score=109.65",
       "expected": "z_score<2 (baseline_mean=0.788167)",
-      "severity": "INFO",
+      "severity": "HIGH",
       "records_failing": 0,
       "sample_failing": [],
-      "message": "OK"
+      "message": "Statistical drift detected: z=109.65"
     },
     {
       "check_id": "week7-extractions.extracted_facts_0_page_ref.not_null",

@@ -19,6 +19,7 @@ models:
     description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 1.'
     tests:
     - not_null
+    - unique
     - accepted_values:
         values:
         - 85489556-f617-42e2-85f4-d51a0efadbbb
@@ -33,8 +34,6 @@ models:
     description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 60.'
     tests:
     - not_null
-    - dbt_utils.expression_is_true:
-        expression: sequence_number >= 1.0 AND sequence_number <= 60.0
   - name: payload_status
     description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 1.'
     tests:
@@ -49,7 +48,10 @@ models:
     - unique
   - name: metadata_causation_id
     description: 'Auto-profiled. Null rate: 100.0%. Distinct values: 0.'
-    tests: []
+    tests:
+    - unique
+    - accepted_values:
+        values: []
   - name: metadata_correlation_id
     description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 60.'
     tests:
@@ -59,6 +61,7 @@ models:
     description: 'Auto-profiled. Null rate: 0.0%. Distinct values: 1.'
     tests:
     - not_null
+    - unique
     - accepted_values:
         values:
         - user_001
